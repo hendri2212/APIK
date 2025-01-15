@@ -15,12 +15,12 @@
         <div class="row">
             <div class="col">
                 <div class="d-grid">
-                    <input type="button" value="Check In" class="btn btn-success">
+                    <a href="/checkin" class="btn btn-success">Check In</a>
                 </div>
             </div>
             <div class="col">
                 <div class="d-grid">
-                    <input type="button" value="Check Out" class="btn btn-info">
+                    <a href="/checkout" class="btn btn-success">Check Out</a>
                 </div>
             </div>
         </div>
