@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\PresenceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,5 +24,7 @@ Route::view('/absent', 'absent');
 // routes/web.php
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::get('/checkin', [PresenceController::class, 'CheckIn']);
+Route::get('/checkout', [PresenceController::class, 'CheckOut']);
 Route::get('/history/absent', [App\Http\Controllers\HistoryController::class, 'index'])->name('history.index');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
