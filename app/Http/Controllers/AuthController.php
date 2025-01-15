@@ -19,6 +19,13 @@ class AuthController extends Controller
             'username' => 'required',
             'password' => 'required',
         ]);
+        // Cari user berdasarkan username
+        $user = \App\Models\User::where('username', $request->username)->first();
+    
+        // Periksa apakah user ditemukan
+        if (!$user) {
+            return back()->withErrors(['loginError' => 'Username tidak ditemukan.']);
+        }
 
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
@@ -28,7 +35,7 @@ class AuthController extends Controller
                 "loginMobileAuthInput" => [
                     "username" => $request->username,
                     "password" => $request->password,
-                    "uuid" => "72933c6ac7954f61"
+                    "uuid" => $user->uuid, // Ambil UUID dari database
                 ]
             ],
             "query" => "mutation LoginMobile(\$loginMobileAuthInput: LoginMobileAuthInput!) { loginMobile(loginMobileAuthInput: \$loginMobileAuthInput) { access_token refresh_token userdata { employee_nip user_id user_level __typename } __typename } __typename }"

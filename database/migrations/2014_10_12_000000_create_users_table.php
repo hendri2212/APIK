@@ -14,9 +14,17 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
+            // $table->string('email')->unique();
+            $table->string('username')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('uuid')->unique();
+            // $table->unsignedBigInteger('office_id');
+            // $table->foreign('office_id')            // Menambahkan foreign key
+            //     ->references('id')
+            //     ->on('offices')
+            //     ->onDelete('cascade')             // Opsi cascading delete jika data dihapus
+            //     ->onUpdate('cascade');
             $table->rememberToken();
             $table->timestamps();
         });
