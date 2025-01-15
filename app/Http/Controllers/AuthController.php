@@ -50,7 +50,8 @@ class AuthController extends Controller
 
             // dd(Session::get('api_token'));
 
-            return redirect()->route('history.index');
+            // return redirect()->route('history.index');
+            return redirect()->route('/');
         }
 
         return back()->withErrors(['loginError' => 'Login gagal, periksa kembali kredensial Anda.']);
