@@ -18,7 +18,7 @@
         <div class="d-grid py-4">
             <a href="/absent" class="btn btn-lg rounded-4 btn-success border-white py-3">
                 <i class="bi bi-door-open-fill mx-2"></i>
-                Absent
+                Presence
             </a>
         </div>
     </div>
