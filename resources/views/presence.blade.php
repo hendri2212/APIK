@@ -33,32 +33,34 @@
 
         <p class="text-start mt-4 mb-2 text-black fw-bold">Absent History</p>
         @foreach($data as $item)
-            <div>
-                <div class="alert alert-light" role="alert">
-                    <div class="row">
-                        <div class="col">
-                            <div class="d-flex flex-column">
-                                <label>Check In</label>
-                                {{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('d F Y') }}
-                                <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) ? $item['presensi_apik'][0]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][0]['presensi_foto_file_name']) ? $item['presensi_apik'][0]['presensi_foto_file_name'] : '-' }}" class="img-fluid rounded-4 w-25">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <h1>{{ isset($item['presensi_apik'][0]['presensi_time']) ? $item['presensi_apik'][0]['presensi_time'] : '-' }}</h1>
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title">Presensi Masuk</h5>
+                        <span class="badge bg-warning text-dark ms-auto fs-5">{{ $item['status_name'] }}</span>
+                    </div>
+                    <p class="card-text text-muted">{{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('d F Y') }}</p>
+                    <div class="d-flex align-items-center">
+                        <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) ? $item['presensi_apik'][0]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][0]['presensi_foto_file_name']) ? $item['presensi_apik'][0]['presensi_foto_file_name'] : '-' }}" class="rounded-4 me-3" style="width: 100px; height: 100px;">
+                        <div>
+                            <h1 class="display-4 text-warning mb-0">{{ isset($item['presensi_apik'][0]['presensi_time']) ? $item['presensi_apik'][0]['presensi_time'] : '-' }}</h1>
+                            <p class="text-muted mb-0">Masuk: 07:15:00 - 08:00:00</p>
                         </div>
                     </div>
                 </div>
-                <div class="alert alert-light" role="alert">
-                    <div class="row">
-                        <div class="col">
-                            <div class="d-flex flex-column">
-                                <label>Check Out</label>
-                                {{ Carbon::parse($item['tanggal_keluar'])->translatedFormat('d F Y') }}
-                                <img src="{{ isset($item['presensi_apik'][1]['presensi_foto_url']) ? $item['presensi_apik'][1]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][1]['presensi_foto_file_name']) ? $item['presensi_apik'][1]['presensi_foto_file_name'] : '-' }}" class="img-fluid rounded-4 w-25">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <h1>{{ isset($item['presensi_apik'][1]['presensi_time']) ? $item['presensi_apik'][1]['presensi_time'] : '-' }}</h1>
+            </div>
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title">Presensi Pulang</h5>
+                        <span class="badge bg-warning text-dark ms-auto fs-5">{{ $item['status_name'] }}</span>
+                    </div>
+                    <p class="card-text text-muted">{{ Carbon::parse($item['tanggal_keluar'])->translatedFormat('d F Y') }}</p>
+                    <div class="d-flex align-items-center">
+                        <img src="{{ isset($item['presensi_apik'][1]['presensi_foto_url']) ? $item['presensi_apik'][1]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][1]['presensi_foto_file_name']) ? $item['presensi_apik'][1]['presensi_foto_file_name'] : '-' }}" class="rounded-4 me-3" style="width: 100px; height: 100px;">
+                        <div>
+                            <h1 class="display-4 text-warning mb-0">{{ isset($item['presensi_apik'][1]['presensi_time']) ? $item['presensi_apik'][1]['presensi_time'] : '-' }}</h1>
+                            <p class="text-muted mb-0">Pulang: 16:00:00 - 23:59:00</p>
                         </div>
                     </div>
                 </div>
