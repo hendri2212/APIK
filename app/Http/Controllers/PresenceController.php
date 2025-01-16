@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Face;
+use Illuminate\Support\Arr;
 
 class PresenceController extends Controller
 {
@@ -54,13 +55,16 @@ class PresenceController extends Controller
         }
 
         $userId = Session::get('user_id');
-        $faceImage = Face::where('user_id', $userId)->latest()->first();
+        $faceImages = Face::where('user_id', $userId)->get();
 
-        if (!$faceImage) {
-            return response()->json(['error' => 'Face image not found.'], 404);
+        if ($faceImages->isEmpty()) {
+            return response()->json(['error' => 'No images available.'], 404);
         }
 
-        $fileName = $faceImage->face_name; // Pastikan ini sesuai dengan kolom di database
+        // Pilih gambar secara acak
+        $randomFaceImage = Arr::random($faceImages->toArray());
+        $fileName = $randomFaceImage['face_name'];
+
         $filePath = storage_path("app/private/face/{$fileName}");
 
         if (!file_exists($filePath)) {
@@ -142,13 +146,16 @@ class PresenceController extends Controller
         }
 
         $userId = Session::get('user_id');
-        $faceImage = Face::where('user_id', $userId)->latest()->first();
+        $faceImages = Face::where('user_id', $userId)->get();
 
-        if (!$faceImage) {
-            return response()->json(['error' => 'Face image not found.'], 404);
+        if ($faceImages->isEmpty()) {
+            return response()->json(['error' => 'No images available.'], 404);
         }
 
-        $fileName = $faceImage->face_name; // Pastikan ini sesuai dengan kolom di database
+        // Pilih gambar secara acak
+        $randomFaceImage = Arr::random($faceImages->toArray());
+        $fileName = $randomFaceImage['face_name'];
+
         $filePath = storage_path("app/private/face/{$fileName}");
 
         if (!file_exists($filePath)) {
