@@ -16,7 +16,7 @@
         <h1 class="fw-bold mb-0" style="font-size: 70px">20.10.11</h1>
         <p class="mb-0">Selasa, 14 Januari 2025</p>
         <div class="d-grid py-4">
-            <a href="/absent" class="btn btn-lg rounded-4 btn-success border-white py-3">
+            <a href="/presence" class="btn btn-lg rounded-4 btn-success border-white py-3">
                 <i class="bi bi-door-open-fill mx-2"></i>
                 Presence
             </a>

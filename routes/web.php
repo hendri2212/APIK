@@ -17,13 +17,14 @@ use App\Http\Controllers\PresenceController;
 */
 
 Route::get('/', function () {
-    return view('dashboard')->name('home');
-});
-Route::view('/absent', 'absent');
+    return view('dashboard');
+})->name('dashboard');
+// Route::view('/presence')->name('presence');
 
 // routes/web.php
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::get('/presence', [PresenceController::class, 'index'])->name('presence');
 Route::get('/checkin', [PresenceController::class, 'CheckIn']);
 Route::get('/checkout', [PresenceController::class, 'CheckOut']);
 Route::get('/history/absent', [App\Http\Controllers\HistoryController::class, 'index'])->name('history.index');
