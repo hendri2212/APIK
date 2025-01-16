@@ -17,7 +17,7 @@ use App\Http\Controllers\PresenceController;
 */
 
 Route::get('/', function () {
-    return view('dashboard');
+    return view('dashboard')->name('home');
 });
 Route::view('/absent', 'absent');
 
