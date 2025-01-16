@@ -47,12 +47,9 @@ class AuthController extends Controller
 
             // Simpan token dalam sesi
             Session::put('api_token', $accessToken);
-
             // dd(Session::get('api_token'));
 
-            // return redirect()->route('history.index');
-            return redirect()->route('home');
-
+            return redirect()->route('dashboard');
         }
 
         return back()->withErrors(['loginError' => 'Login gagal, periksa kembali kredensial Anda.']);
