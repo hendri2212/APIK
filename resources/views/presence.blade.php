@@ -37,7 +37,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h5 class="card-title">Presensi Masuk</h5>
-                        <span class="badge bg-warning text-dark ms-auto fs-5">{{ $item['status_name'] }}</span>
+                        <span class="badge bg-warning text-dark ms-auto fs-5">{{ $item['jam_masuk_status'] }}</span>
                     </div>
                     <p class="card-text text-muted">{{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('d F Y') }}</p>
                     <div class="d-flex align-items-center">
@@ -53,7 +53,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h5 class="card-title">Presensi Pulang</h5>
-                        <span class="badge bg-warning text-dark ms-auto fs-5">{{ $item['status_name'] }}</span>
+                        <span class="badge bg-warning text-dark ms-auto fs-5">{{ $item['jam_keluar_status'] }}</span>
                     </div>
                     <p class="card-text text-muted">{{ Carbon::parse($item['tanggal_keluar'])->translatedFormat('d F Y') }}</p>
                     <div class="d-flex align-items-center">
