@@ -33,7 +33,7 @@
 
         <p class="text-start mt-4 mb-2 text-black fw-bold">Absent History</p>
         @foreach($data as $item)
-            <div>
+            <div style="height: 90vh">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
@@ -42,8 +42,11 @@
                         </div>
                         <p class="card-text text-muted">{{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('d F Y') }}</p>
                         <div class="d-flex align-items-center">
-                            <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) ? $item['presensi_apik'][0]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][0]['presensi_foto_file_name']) ? $item['presensi_apik'][0]['presensi_foto_file_name'] : '-' }}" class="rounded-4 me-3" style="width: 100px; height: 100px;">
-                            <div>
+                            <!-- <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) ? $item['presensi_apik'][0]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][0]['presensi_foto_file_name']) ? $item['presensi_apik'][0]['presensi_foto_file_name'] : '-' }}" class="rounded-4 me-3" style="width: 100px; height: 100px;"> -->
+                            <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
+                                <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) ? $item['presensi_apik'][0]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][0]['presensi_foto_file_name']) ? $item['presensi_apik'][0]['presensi_foto_file_name'] : '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
+                            </div>
+                            <div class="mx-3">
                                 <!-- <h1 class="display-4 text-warning mb-0 fw-bold">{{ isset($item['presensi_apik'][0]['presensi_time']) ? $item['presensi_apik'][0]['presensi_time'] : '-' }}</h1> -->
                                 <h1 class="display-4 text-warning mb-0 fw-bold">{{ isset($item['jam_masuk']) ? $item['jam_masuk'] : '-' }}</h1>
                                 <p class="text-muted mb-0">Masuk: 07:15:00 - 08:00:00</p>
@@ -59,8 +62,11 @@
                         </div>
                         <p class="card-text text-muted">{{ Carbon::parse($item['tanggal_keluar'])->translatedFormat('d F Y') }}</p>
                         <div class="d-flex align-items-center">
-                            <img src="{{ isset($item['presensi_apik'][1]['presensi_foto_url']) ? $item['presensi_apik'][1]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][1]['presensi_foto_file_name']) ? $item['presensi_apik'][1]['presensi_foto_file_name'] : '-' }}" class="rounded-4 me-3" style="width: 100px; height: 100px;">
-                            <div>
+                            <!-- <img src="{{ isset($item['presensi_apik'][1]['presensi_foto_url']) ? $item['presensi_apik'][1]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][1]['presensi_foto_file_name']) ? $item['presensi_apik'][1]['presensi_foto_file_name'] : '-' }}" class="rounded-4 me-3" style="width: 100px; height: 100px;"> -->
+                            <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
+                                <img src="{{ isset($item['presensi_apik'][1]['presensi_foto_url']) ? $item['presensi_apik'][1]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][1]['presensi_foto_file_name']) ? $item['presensi_apik'][1]['presensi_foto_file_name'] : '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
+                            </div>
+                            <div class="mx-3">
                                 <h1 class="display-4 text-warning mb-0 fw-bold">{{ isset($item['jam_keluar']) ? $item['jam_keluar'] : '-' }}</h1>
                                 <p class="text-muted mb-0">Pulang: 16:00:00 - 23:59:00</p>
                             </div>
