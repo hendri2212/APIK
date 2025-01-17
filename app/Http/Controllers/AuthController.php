@@ -46,6 +46,7 @@ class AuthController extends Controller {
             Session::put([
                 'api_token' => $accessToken,
                 'user_id' => $user->id,
+                'full_name' => $user->name,
             ]);
             // dd(Session::get('api_token'));
 

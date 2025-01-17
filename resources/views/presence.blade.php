@@ -33,7 +33,7 @@
 
         <p class="text-start mt-4 mb-2 text-black fw-bold">Absent History</p>
         @foreach($data as $item)
-            <div style="height: 75vh">
+            <div style="height: 80vh">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">

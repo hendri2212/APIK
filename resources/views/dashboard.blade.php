@@ -6,15 +6,16 @@
     <div class="container bg-warning text-white pt-4">
         <div class="d-flex align-items-center text-success">
             <a href="/profile" class="text-reset text-decoration-none d-flex">
-                <i class="bi bi-person-circle fs-1 border-white"></i>
+                <i class="bi bi-person-circle fs-1 border-white text-white"></i>
                 <div class="mx-2">
-                    <span class="fw-lighter small">Selamat Datang,</span>
-                    <p class="fw-bold">Hendri Arifin, S.Kom</p>
+                    <span class="fw-lighter small text-white">Selamat Datang,</span>
+                    <p class="fw-bold text-uppercase text-white">{{ session('full_name') }}</p>
                 </div>
             </a>
         </div>
-        <h1 class="fw-bold mb-0" style="font-size: 70px">20.10.11</h1>
-        <p class="mb-0">Selasa, 14 Januari 2025</p>
+        <!-- <div id="realtime-clock" style="font-size: 24px; font-weight: bold;"></div> -->
+        <h1 id="realtime-clock" class="fw-bold mb-0" style="font-size: 70px"></h1>
+        <p id="realtime-date" class="mb-0 px-2"></p>
         <div class="d-grid py-4">
             <a href="/presence" class="btn btn-lg rounded-4 btn-success border-white py-3">
                 <i class="bi bi-door-open-fill mx-2"></i>

@@ -15,5 +15,35 @@
         @yield('navbar')
         @yield('content')
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script>
+            function updateClock() {
+                const clockElement = document.getElementById('realtime-clock');
+                const dateElement = document.getElementById('realtime-date');
+                const now = new Date();
+
+                // Format jam
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+
+                // Array nama hari dan bulan
+                const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                const months = [
+                    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                ];
+
+                // Format tanggal
+                const dayName = days[now.getDay()];
+                const day = String(now.getDate()).padStart(2, '0');
+                const monthName = months[now.getMonth()];
+                const year = now.getFullYear();
+                dateElement.textContent = `${dayName}, ${day} ${monthName} ${year}`;
+            }
+
+            setInterval(updateClock, 1000);
+            updateClock();
+        </script>
     </body>
 </html>
