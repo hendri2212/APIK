@@ -44,10 +44,10 @@
                 </a>
             </div>
             <div class="col-3">
-                <div class="bg-secondary-subtle text-muted bg-opacity-10 d-flex flex-column py-2 rounded-2">
-                    <i class="bi bi-journal-check fs-3"></i>
-                    <span class="small">Journal</span>
-                </div>
+                <a href="/face" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none">
+                    <i class="bi bi-fingerprint fs-3"></i>
+                    <span class="small">Face Image</span>
+                </a>
             </div>
             <div class="col-3">
                 <div class="bg-secondary-subtle text-muted bg-opacity-10 d-flex flex-column py-2 rounded-2">
