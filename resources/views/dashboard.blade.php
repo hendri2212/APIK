@@ -23,7 +23,7 @@
             </a>
         </div>
     </div>
-    <div class="bg-white container text-center text-success">
+    <div class="bg-white container text-center text-success" style="height: 60vh">
         <div class="row g-2">
             <div class="col-3">
                 <a href="/history/absent" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none">

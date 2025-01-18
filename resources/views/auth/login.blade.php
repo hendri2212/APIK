@@ -3,9 +3,9 @@
 @section('title', 'Login Page')
 
 @section('content')
-    <div class="bg-white container text-center py-4">
-        <img src="https://smkn1kotabaru.sch.id/media_library/images/c6ab60e235b679b8b7f9ac1743593c59.png" alt="Logo SMKN 1 Kotabaru" class="mb-4">
-        <h2 class="text-uppercase fw-bold">Absent</h2>
+    <div class="bg-white container text-center py-4" style="height: 100vh">
+        <img src="{{ asset('logo.png') }}" alt="Logo SMKN 1 Kotabaru" class="mb-4 img-fluid w-25">
+        <!-- <h2 class="text-uppercase fw-bold">Absent</h2> -->
         <h6 class="fw-bold">APPLICATION ABSENT SUPER AI AUTO</h6>
         @if($errors->has('loginError'))
             <div class="alert alert-danger">{{ $errors->first('loginError') }}</div>
@@ -18,5 +18,8 @@
                 <input type="submit" value="Sign In" class="btn btn-success btn-lg rounded-0">
             </div>
         </form>
+        <p class="pt-3 text-muted">
+            Create with <a href="#" class="text-decoration-none text-reset">LOVE <i class="bi bi-heart-fill text-danger"></i><i class="bi bi-heart-fill text-danger"></i><i class="bi bi-heart-fill text-danger"></i></a>
+        </p>
     </div>
 @endsection
