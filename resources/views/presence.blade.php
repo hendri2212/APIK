@@ -21,12 +21,12 @@
         <div class="row">
             <div class="col">
                 <div class="d-grid">
-                    <a href="/checkin" class="btn btn-success">Check In</a>
+                    <a href="/checkin" class="btn btn-lg btn-success">Check In</a>
                 </div>
             </div>
             <div class="col">
                 <div class="d-grid">
-                    <a href="/checkout" class="btn btn-info">Check Out</a>
+                    <a href="/checkout" class="btn btn-lg btn-info">Check Out</a>
                 </div>
             </div>
         </div>
@@ -36,8 +36,8 @@
             <div style="height: 80vh">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <h5 class="card-title fw-bold">Presensi Masuk</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title fw-bold mb-0">Presensi Masuk</h5>
                             <span class="rounded-pill bg-warning text-white fw-bold p-2">{{ $item['jam_masuk_status'] }}</span>
                         </div>
                         <p class="card-text text-muted">{{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('d F Y') }}</p>
@@ -56,8 +56,8 @@
                 </div>
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <h5 class="card-title fw-bold">Presensi Pulang</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title fw-bold mb-0">Presensi Pulang</h5>
                             <span class="rounded-pill bg-warning text-white fw-bold p-2">{{ $item['jam_keluar_status'] }}</span>
                         </div>
                         <p class="card-text text-muted">{{ Carbon::parse($item['tanggal_keluar'])->translatedFormat('d F Y') }}</p>
