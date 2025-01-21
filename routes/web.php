@@ -20,14 +20,17 @@ use App\Http\Controllers\HistoryController;
 Route::get('/', function () {
     return view('dashboard');
 })->name('dashboard');
-// Route::view('/presence')->name('presence');
 
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::get('/presence', [PresenceController::class, 'index'])->name('presence');
 Route::get('/checkin', [PresenceController::class, 'CheckIn']);
 Route::get('/checkout', [PresenceController::class, 'CheckOut']);
-Route::get('/face/{face}', [FaceController::class, 'show'])->name('face.show');
-Route::get('/face', [FaceController::class, 'index']);
+Route::prefix('face')->group(function () {
+    Route::view('/add', 'face.add');
+    Route::get('/', [FaceController::class, 'index']);
+    Route::post('/', [FaceController::class, 'store'])->name('face.store');
+    Route::get('/{id}', [FaceController::class, 'show'])->name('face.show');
+});
 Route::get('/history/absent', [App\Http\Controllers\HistoryController::class, 'index'])->name('history.index');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

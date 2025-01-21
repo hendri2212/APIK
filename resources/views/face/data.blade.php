@@ -6,14 +6,14 @@
     <div class="container bg-warning py-2">
         <div class="d-flex align-items-center">
             <i class="bi bi-arrow-left-circle fs-3" onclick="history.back()" style="cursor: pointer;"></i>
-            <p class="mb-0 mx-3 fw-bold">Presence History</p>
+            <p class="mb-0 mx-3 fw-bold">Data Face Image</p>
         </div>
     </div>
 @endsection
 
 @section('content')
     <div class="bg-white container">
-        <button type="submit" class="btn btn-primary mt-2">Add Image</button>
+        <a href="{{ url('/face/add') }}" class="btn btn-primary mt-2">Add Image</a>
         @forelse($facePaths as $path)
             <div class="alert alert-light mb-0 mt-2">
                 <div class="d-flex justify-content-between align-items-center">

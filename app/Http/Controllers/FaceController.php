@@ -5,21 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use App\Models\Face;
 
 class FaceController extends Controller {
+    private $userId; // Properti untuk menyimpan user_id
+
+    public function __construct() {
+        $this->middleware(function ($request, $next) {
+            $this->userId = Session::get('user_id', 'default_value');
+            return $next($request);
+        });
+    }
+
     public function index() {
-        $userId = Session::get('user_id'); // Ambil user_id dari session
-        if (!$userId) {
+        if (!$this->userId) {
             return redirect()->route('login')->withErrors(['authError' => 'Anda harus login terlebih dahulu.']);
         }
 
-        // Dapatkan semua nama file dari model Face
-        $files = Face::where('user_id', $userId)->pluck('face_name'); // Misalnya ada kolom `face_name`
-
-        // Konversi menjadi path lengkap
+        $files = Face::where('user_id', $this->userId)->pluck('face_name'); // Misalnya ada kolom `face_name`
         $facePaths = $files->map(function ($fileName) {
-            return route('face.show', ['face' => $fileName]);
+            return route('face.show', ['id' => $fileName]);
         });
 
         return view('face.data', compact('facePaths'));
@@ -33,26 +39,39 @@ class FaceController extends Controller {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        // Validasi file
+        $request->validate([
+            'face_name' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Simpan file
+        if ($request->hasFile('face_name')) {
+            $file = $request->file('face_name');
+            $filename = time() . '_' . $file->getClientOriginalName(); // Tambahkan timestamp
+            $path = $file->storeAs('private/face', $filename);
+
+            Face::create(['face_name' => $filename, 'user_id' => $this->userId]);
+
+            // return back()->with('success', 'Image uploaded successfully!');
+            return redirect('/face');
+        }
+
+        return back()->with('error', 'Please select a valid image.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Face $face) {
-        $filePath = storage_path('app/private/face/{$face->id}');
+    public function show(Face $face, $id) {
+        $disk = Storage::disk('private');
+        $filePath = "face/{$id}";
 
-        // Periksa apakah file ada
-        if (!Storage::exists($filePath)) {
+        if (!$disk->exists($filePath)) {
             abort(404, 'File not found.');
         }
 
-        return response()->file(Storage::path($filePath));
+        return response()->file($disk->path($filePath));
     }
 
     /**
