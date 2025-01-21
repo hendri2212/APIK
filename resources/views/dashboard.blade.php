@@ -9,7 +9,7 @@
                 <i class="bi bi-person-circle fs-1 border-white text-white"></i>
                 <div class="mx-2">
                     <span class="fw-lighter small text-white">Selamat Datang,</span>
-                    <p class="fw-bold text-uppercase text-white">{{ session('full_name') }}</p>
+                    <p class="fw-bold text-uppercase text-white mb-0">{{ session('full_name') }}</p>
                 </div>
             </a>
         </div>

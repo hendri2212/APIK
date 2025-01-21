@@ -14,7 +14,7 @@
         </div>
     </div>
 @endsection
- 
+
 @section('content')
     <div class="bg-white container text-success">
         <form method="GET" action="{{ url('/history/absent') }}" class="py-2">
