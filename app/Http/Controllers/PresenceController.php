@@ -37,11 +37,11 @@ class PresenceController extends Controller
         // Filter data untuk hanya menampilkan item dengan tanggal_masuk tidak kosong
         $data = array_filter($data, function ($item) {
             // return !empty($item['nip']);
-            return $item['status_code'] == '1';
+            return $item['jam_masuk'] == '' OR $item['jam_keluar'] == '';
         });
 
         // Ambil 3 data terakhir
-        $data = array_slice($data, -1);
+        $data = array_slice($data, 1);
 
         return view('presence', compact('data', 'tanggal'));
     }
