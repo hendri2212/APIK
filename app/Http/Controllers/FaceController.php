@@ -25,7 +25,7 @@ class FaceController extends Controller {
 
         $files = Face::where('user_id', $this->userId)->pluck('face_name'); // Misalnya ada kolom `face_name`
         $facePaths = $files->map(function ($fileName) {
-            return route('face.show', ['id' => $fileName]);
+            return route('face.show', ['file_name' => $fileName]);
         });
 
         return view('face.data', compact('facePaths'));
@@ -63,15 +63,16 @@ class FaceController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show(Face $face, $id) {
+    public function show($file_name) {
         $disk = Storage::disk('private');
-        $filePath = "face/{$id}";
+        $filePath = "face/{$file_name}";
 
         if (!$disk->exists($filePath)) {
             abort(404, 'File not found.');
         }
 
         return response()->file($disk->path($filePath));
+        // return response()->download($disk->path($filePath));
     }
 
     /**
