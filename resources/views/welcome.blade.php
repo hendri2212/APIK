@@ -3,7 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffc107" />
+        <meta name="theme-color" content="#ffc107"> <!-- Ganti dengan warna yang diinginkan -->
+        <!-- <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffc107" /> -->
         
         <title>Apik - @yield('title')</title>
         <link rel="icon" href="favicon.ico" type="image/x-icon">
