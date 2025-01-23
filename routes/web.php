@@ -30,7 +30,9 @@ Route::prefix('face')->group(function () {
     Route::view('/add', 'face.add');
     Route::get('/', [FaceController::class, 'index']);
     Route::post('/', [FaceController::class, 'store'])->name('face.store');
-    Route::get('/{file_name}', [FaceController::class, 'show'])->name('face.show');
+    Route::get('/{id}', [FaceController::class, 'edit'])->where('id', '[0-9]+');
+    Route::get('/{file_name}', [FaceController::class, 'show'])->name('face.show')->where('file_name', '[a-zA-Z0-9_\-\.]+');
+    Route::put('/{id}', [FaceController::class, 'update'])->name('face.update');
 });
 Route::get('/history/absent', [App\Http\Controllers\HistoryController::class, 'index'])->name('history.index');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

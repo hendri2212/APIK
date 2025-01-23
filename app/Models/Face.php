@@ -10,6 +10,7 @@ class Face extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'face_name',
         'user_id',
         'day'

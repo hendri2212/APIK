@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 use App\Models\Face;
 use Illuminate\Support\Arr;
 
@@ -61,13 +62,13 @@ class PresenceController extends Controller
     public function CheckIn(Request $request) {
         // Ambil token dari sesi
         $token = Session::get('api_token');
-        // dd($token);
         if (!$token) {
             return redirect()->route('login')->withErrors(['authError' => 'Anda harus login terlebih dahulu.']);
         }
 
         $userId = Session::get('user_id');
-        $faceImages = Face::where('user_id', $userId)->get();
+        $currentDay = Carbon::now()->dayOfWeek;
+        $faceImages = Face::where('user_id', $userId)->where('day', $currentDay)->get();
 
         if ($faceImages->isEmpty()) {
             return response()->json(['error' => 'No images available.'], 404);
@@ -158,7 +159,8 @@ class PresenceController extends Controller
         }
 
         $userId = Session::get('user_id');
-        $faceImages = Face::where('user_id', $userId)->get();
+        $currentDay = Carbon::now()->dayOfWeek;
+        $faceImages = Face::where('user_id', $userId)->where('day', $currentDay)->get();
 
         if ($faceImages->isEmpty()) {
             return response()->json(['error' => 'No images available.'], 404);

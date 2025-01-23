@@ -18,10 +18,13 @@
             <div class="alert alert-light mb-0 mt-2">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
-                        <img src="{{ $path }}" alt="face-name" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
+                        <img src="{{ $path['path'] }}" alt="face-name" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
+                    </div>
+                    <div>
+                        <p>Day: {{ $path['day'] }}</p>
                     </div>
                     <div class="btn-group">
-                        <input type="button" class="btn btn-success" value="Verify">
+                        <a href="/face/{{ $path['id'] }}" class="btn btn-success">Edit</a>
                         <button class="btn btn-danger">
                             <i class="bi bi-trash3"></i>
                         </button>

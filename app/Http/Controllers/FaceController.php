@@ -23,9 +23,22 @@ class FaceController extends Controller {
             return redirect()->route('login')->withErrors(['authError' => 'Anda harus login terlebih dahulu.']);
         }
 
-        $files = Face::where('user_id', $this->userId)->pluck('face_name'); // Misalnya ada kolom `face_name`
-        $facePaths = $files->map(function ($fileName) {
-            return route('face.show', ['file_name' => $fileName]);
+        $files = Face::where('user_id', $this->userId)->get();
+        $daysOfWeek = [
+            0 => 'Minggu',
+            1 => 'Senin',
+            2 => 'Selasa',
+            3 => 'Rabu',
+            4 => 'Kamis',
+            5 => 'Jumat',
+            6 => 'Sabtu',
+        ];
+        $facePaths = $files->map(function ($file) use ($daysOfWeek) {
+            return [
+                'id' => $file->id,
+                'path' => route('face.show', ['file_name' => $file->face_name]),
+                'day' => $daysOfWeek[$file->day] ?? 'Tidak Diketahui'
+            ];
         });
 
         return view('face.data', compact('facePaths'));
@@ -60,9 +73,6 @@ class FaceController extends Controller {
         return back()->with('error', 'Please select a valid image.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($file_name) {
         $disk = Storage::disk('private');
         $filePath = "face/{$file_name}";
@@ -75,20 +85,26 @@ class FaceController extends Controller {
         // return response()->download($disk->path($filePath));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Face $face)
-    {
-        //
+    public function edit($id) {
+        $file = Face::findOrFail($id); // Ambil data berdasarkan ID
+        return view('face.edit', compact('file')); // Kirim data ke view
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Face $face)
-    {
-        //
+    public function update(Request $request, $id) {
+        $request->validate([
+            // 'face_name' => 'required|string|max:255',
+            'day' => 'required|integer|between:0,6',
+        ]);
+    
+        $file = Face::findOrFail($id);
+        // $file->face_name = $request->input('face_name');
+        $file->day = $request->input('day');
+        $file->save(); // Simpan perubahan
+    
+        return redirect('/face')->with('success', 'Data berhasil diperbarui');
     }
 
     /**
