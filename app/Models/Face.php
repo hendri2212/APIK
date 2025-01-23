@@ -11,6 +11,7 @@ class Face extends Model
 
     protected $fillable = [
         'face_name',
-        'user_id'
+        'user_id',
+        'day'
     ];
 }
