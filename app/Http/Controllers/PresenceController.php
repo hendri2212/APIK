@@ -34,16 +34,28 @@ class PresenceController extends Controller
         // Ambil data dari respons API
         $data = $response->json()['data']['presensiEabsenHistoryMe'];
 
-        // Filter data untuk hanya menampilkan item dengan tanggal_masuk tidak kosong
         $data = array_filter($data, function ($item) {
-            // return !empty($item['nip']);
-            return $item['jam_masuk'] == '' OR $item['jam_keluar'] == '';
+            $today = date('Y-m-d');
+            return isset($item['tanggal_masuk']) && $item['tanggal_masuk'] === $today;
         });
 
-        // Ambil 3 data terakhir
-        $data = array_slice($data, 1);
+        // Pisahkan absen masuk dan keluar untuk setiap entri
+        $data = array_map(function ($item) {
+            $presensi_apik = $item['presensi_apik'] ?? [];
 
-        return view('presence', compact('data', 'tanggal'));
+            // Ambil absen masuk (IN)
+            $absen_masuk = collect($presensi_apik)->firstWhere('presensi_tipe', 'IN');
+            $item['absen_masuk'] = $absen_masuk['presensi_time'] ?? null;
+
+            // Ambil absen keluar (OUT)
+            $absen_keluar = collect($presensi_apik)->firstWhere('presensi_tipe', 'OUT');
+            $item['absen_keluar'] = $absen_keluar['presensi_time'] ?? null;
+
+            return $item;
+        }, $data);
+
+        // return view('presence', compact('data', 'tanggal'));
+        return view('presence', compact('data'));
     }
 
     public function CheckIn(Request $request) {
