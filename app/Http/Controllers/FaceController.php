@@ -23,7 +23,7 @@ class FaceController extends Controller {
             return redirect()->route('login')->withErrors(['authError' => 'Anda harus login terlebih dahulu.']);
         }
 
-        $files = Face::where('user_id', $this->userId)->get();
+        $files = Face::where('user_id', $this->userId)->orderBy('day', 'asc')->get();
         $daysOfWeek = [
             0 => 'Minggu',
             1 => 'Senin',
