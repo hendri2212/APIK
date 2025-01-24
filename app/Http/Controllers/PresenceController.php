@@ -46,11 +46,11 @@ class PresenceController extends Controller
 
             // Ambil absen masuk (IN)
             $absen_masuk = collect($presensi_apik)->firstWhere('presensi_tipe', 'IN');
-            $item['absen_masuk'] = $absen_masuk['presensi_time'] ?? null;
+            $item['presensi_foto_masuk'] = $absen_masuk['presensi_foto_url'] ?? null;
 
             // Ambil absen keluar (OUT)
             $absen_keluar = collect($presensi_apik)->firstWhere('presensi_tipe', 'OUT');
-            $item['absen_keluar'] = $absen_keluar['presensi_time'] ?? null;
+            $item['presensi_foto_keluar'] = $absen_keluar['presensi_foto_url'] ?? null;
 
             return $item;
         }, $data);

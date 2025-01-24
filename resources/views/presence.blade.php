@@ -42,9 +42,10 @@
                         </div>
                         <p class="card-text text-muted">{{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('d F Y') }}</p>
                         <div class="d-flex align-items-center">
-                            @if ($item['absen_masuk'])
+                            @if ($item['presensi_foto_masuk'])
                             <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
-                                <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) ? $item['presensi_apik'][0]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][0]['presensi_foto_file_name']) ? $item['presensi_apik'][0]['presensi_foto_file_name'] : '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
+                                <!-- <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) ? $item['presensi_apik'][0]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][0]['presensi_foto_file_name']) ? $item['presensi_apik'][0]['presensi_foto_file_name'] : '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;"> -->
+                                <img src="{{ $item['presensi_foto_masuk'] }}" alt="Foto Absen Masuk" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
                             </div>
                             @else
                             <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
@@ -66,10 +67,10 @@
                         </div>
                         <p class="card-text text-muted">{{ Carbon::parse($item['tanggal_keluar'])->translatedFormat('d F Y') }}</p>
                         <div class="d-flex align-items-center">
-                            @if ($item['absen_keluar'])
+                            @if ($item['presensi_foto_keluar'])
                             <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
                                 <!-- <img src="{{ isset($item['presensi_apik'][1]['presensi_foto_url']) ? $item['presensi_apik'][1]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][1]['presensi_foto_file_name']) ? $item['presensi_apik'][1]['presensi_foto_file_name'] : '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;"> -->
-                                <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) ? $item['presensi_apik'][0]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][0]['presensi_foto_file_name']) ? $item['presensi_apik'][0]['presensi_foto_file_name'] : '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
+                                <img src="{{ $item['presensi_foto_keluar'] }}" alt="Foto Absen Keluar" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
                             </div>
                             @else
                             <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
