@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use App\Models\Face;
+use App\Models\User;
 use Illuminate\Support\Arr;
 
-class PresenceController extends Controller
-{
+class PresenceController extends Controller {
     public function index(Request $request) {
         $tanggal = $request->input('tanggal', date('Y-m')); // Menggunakan bulan saat ini sebagai default
 
@@ -58,6 +58,27 @@ class PresenceController extends Controller
         // return view('presence', compact('data', 'tanggal'));
         return view('presence', compact('data'));
     }
+    
+    public function generateRandomCoordinates($latitude, $longitude, $radiusInMeters) {
+        $radiusInDegrees = $radiusInMeters / 111320; // Konversi meter ke derajat
+        $u = rand() / getrandmax();
+        $v = rand() / getrandmax();
+
+        $w = $radiusInDegrees * sqrt($u);
+        $t = 2 * pi() * $v;
+
+        $deltaLat = $w * cos($t);
+        $deltaLong = $w * sin($t) / cos(deg2rad($latitude));
+
+        $newLat = $latitude + $deltaLat;
+        $newLong = $longitude + $deltaLong;
+
+        // Membatasi presisi desimal menjadi 7 angka setelah koma
+        $newLat = round($newLat, 7);
+        $newLong = round($newLong, 7);
+
+        return [$newLat, $newLong];
+    }
 
     public function CheckIn(Request $request) {
         // Ambil token dari sesi
@@ -67,6 +88,17 @@ class PresenceController extends Controller
         }
 
         $userId = Session::get('user_id');
+
+        // Ambil data lokasi dan radius dari tabel Users
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['error' => 'User not found.'], 404);
+        }
+
+        $centerLatitude = $user->latitude;
+        $centerLongitude = $user->longitude;
+        $radiusInMeters = $user->radius;
+
         $currentDay = (string) Carbon::now()->dayOfWeek;
         $faceImages = Face::where('user_id', $userId)->where('day', $currentDay)->get();
         if ($faceImages->isEmpty()) {
@@ -83,14 +115,16 @@ class PresenceController extends Controller
             return response()->json(['error' => "File tidak ditemukan: $filePath"], 404);
         }
 
+        [$randomLat, $randomLong] = $this->generateRandomCoordinates($centerLatitude, $centerLongitude, $radiusInMeters);
+
         $curl = curl_init();
 
         $operations = json_encode([
             "operationName" => "CreatePresence",
             "variables" => [
                 "createPresensiInput" => [
-                    "lat" => -3.2252057,
-                    "long" => 116.2475487,
+                    "lat" => $randomLat,
+                    "long" => $randomLong,
                     "tipe" => "in",
                     "status" => "dalam",
                     "foto" => null,
@@ -157,6 +191,16 @@ class PresenceController extends Controller
         }
 
         $userId = Session::get('user_id');
+        // Ambil data lokasi dan radius dari tabel Users
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['error' => 'User not found.'], 404);
+        }
+
+        $centerLatitude = $user->latitude;
+        $centerLongitude = $user->longitude;
+        $radiusInMeters = $user->radius;
+
         $currentDay = (string) Carbon::now()->dayOfWeek;
         $faceImages = Face::where('user_id', $userId)->where('day', $currentDay)->get();
 
@@ -174,14 +218,16 @@ class PresenceController extends Controller
             return response()->json(['error' => "File tidak ditemukan: $filePath"], 404);
         }
 
+        [$randomLat, $randomLong] = $this->generateRandomCoordinates($centerLatitude, $centerLongitude, $radiusInMeters);
+
         $curl = curl_init();
 
         $operations = json_encode([
             "operationName" => "CreatePresence",
             "variables" => [
                 "createPresensiInput" => [
-                    "lat" => -3.2252057,
-                    "long" => 116.2475487,
+                    "lat" => $randomLat,
+                    "long" => $randomLong,
                     "tipe" => "out",
                     "status" => "dalam",
                     "foto" => null,
