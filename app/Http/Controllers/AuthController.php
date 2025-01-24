@@ -57,7 +57,15 @@ class AuthController extends Controller {
     }
 
     public function logout() {
-        Session::forget('api_token');
-        return redirect()->route('login');
+        Session::forget(['api_token', 'user_id', 'full_name']);
+    
+        // Opsional: Gunakan flush jika ingin membersihkan semua data sesi
+        Session::flush();
+    
+        // Opsional: Log aktivitas logout
+        Log::info('User logged out', ['user_id' => Session::get('user_id')]);
+    
+        // Redirect ke halaman login
+        return redirect()->route('login')->with('message', 'You have been logged out successfully.');
     }
 }

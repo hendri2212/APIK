@@ -5,7 +5,7 @@
 @section('content')
     <div class="container bg-warning text-white pt-4">
         <div class="d-flex align-items-center text-success">
-            <a href="/profile" class="text-reset text-decoration-none d-flex">
+            <a href="/logout" class="text-reset text-decoration-none d-flex">
                 <i class="bi bi-person-circle fs-1 border-white text-white"></i>
                 <div class="mx-2">
                     <span class="fw-lighter small text-white">Selamat Datang,</span>

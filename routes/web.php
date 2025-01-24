@@ -23,6 +23,7 @@ Route::get('/', function () {
 
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/presence', [PresenceController::class, 'index'])->name('presence');
 Route::get('/checkin', [PresenceController::class, 'CheckIn']);
 Route::get('/checkout', [PresenceController::class, 'CheckOut']);
