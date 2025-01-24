@@ -67,9 +67,8 @@ class PresenceController extends Controller
         }
 
         $userId = Session::get('user_id');
-        $currentDay = Carbon::now()->dayOfWeek;
+        $currentDay = (string) Carbon::now()->dayOfWeek;
         $faceImages = Face::where('user_id', $userId)->where('day', $currentDay)->get();
-
         if ($faceImages->isEmpty()) {
             return response()->json(['error' => 'No images available.'], 404);
         }
@@ -153,13 +152,12 @@ class PresenceController extends Controller
     public function CheckOut(Request $request) {
         // Ambil token dari sesi
         $token = Session::get('api_token');
-        // dd($token);
         if (!$token) {
             return redirect()->route('login')->withErrors(['authError' => 'Anda harus login terlebih dahulu.']);
         }
 
         $userId = Session::get('user_id');
-        $currentDay = Carbon::now()->dayOfWeek;
+        $currentDay = (string) Carbon::now()->dayOfWeek;
         $faceImages = Face::where('user_id', $userId)->where('day', $currentDay)->get();
 
         if ($faceImages->isEmpty()) {
