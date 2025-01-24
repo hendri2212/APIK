@@ -24,6 +24,10 @@ class AuthController extends Controller {
             return back()->withErrors(['loginError' => 'Username tidak ditemukan.']);
         }
 
+        if ($isExpired = $user->expired < now()->format('Y-m-d')) {
+            return back()->withErrors(['loginError' => 'Akun expired.']);
+        }
+
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
         ])->post('https://gateway.apikv3.kalselprov.go.id/graphql', [
@@ -47,9 +51,8 @@ class AuthController extends Controller {
                 'api_token' => $accessToken,
                 'user_id' => $user->id,
                 'full_name' => $user->name,
+                'expired' => $user->expired,
             ]);
-            // dd(Session::get('api_token'));
-
             return redirect()->route('dashboard');
         }
 
@@ -57,13 +60,10 @@ class AuthController extends Controller {
     }
 
     public function logout() {
-        Session::forget(['api_token', 'user_id', 'full_name']);
+        Session::forget(['api_token', 'user_id', 'full_name', 'expired']);
     
         // Opsional: Gunakan flush jika ingin membersihkan semua data sesi
         Session::flush();
-    
-        // Opsional: Log aktivitas logout
-        Log::info('User logged out', ['user_id' => Session::get('user_id')]);
     
         // Redirect ke halaman login
         return redirect()->route('login')->with('message', 'You have been logged out successfully.');

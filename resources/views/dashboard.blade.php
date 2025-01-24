@@ -5,13 +5,19 @@
 @section('content')
     <div class="container bg-warning text-white pt-4">
         <div class="d-flex align-items-center text-success">
-            <a href="/logout" class="text-reset text-decoration-none d-flex">
+            <a href="" class="text-reset text-decoration-none d-flex" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-person-circle fs-1 border-white text-white"></i>
                 <div class="mx-2">
                     <span class="fw-lighter small text-white">Selamat Datang,</span>
                     <p class="fw-bold text-uppercase text-white mb-0">{{ session('full_name') }}</p>
                 </div>
             </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/logout">Log Out</a></li>
+            </ul>
         </div>
         <!-- <div id="realtime-clock" style="font-size: 24px; font-weight: bold;"></div> -->
         <h1 id="realtime-clock" class="fw-bold mb-0" style="font-size: 70px"></h1>
