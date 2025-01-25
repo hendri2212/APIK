@@ -32,6 +32,11 @@
         </div>
 
         <p class="text-start mt-4 mb-2 text-black fw-bold">Absent History</p>
+        @if(isset($error))
+            <div class="alert alert-danger" role="alert">
+                {{ $error }}
+            </div>
+        @endif
         @foreach($data as $item)
             <div style="height: 80vh">
                 <div class="card mb-4 shadow-sm">

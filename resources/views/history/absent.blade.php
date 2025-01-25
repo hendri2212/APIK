@@ -24,6 +24,11 @@
             </div>
             <button type="submit" class="btn btn-primary">Show Data</button>
         </form>
+        @if(isset($error))
+            <div class="alert alert-danger" role="alert">
+                {{ $error }}
+            </div>
+        @endif
         <div class="table-responsive">
             <table class="table table-bordered table-sm text-nowrap table-hover table-striped">
                 <thead>
