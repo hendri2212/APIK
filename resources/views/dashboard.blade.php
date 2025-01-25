@@ -3,21 +3,24 @@
 @section('title', 'Dashboard')
  
 @section('content')
+    <div class="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
+        <div class="bg-dark p-4">
+            <a href="http://" class="btn btn-outline-warning">Profile</a>
+            <a href="http://" class="btn btn-outline-warning">Setting</a>
+            <a href="/logout" class="btn btn-outline-warning">Log Out</a>
+            <!-- <h5 class="text-body-emphasis h4">Collapsed content</h5>
+            <span class="text-body-secondary">Toggleable via the navbar brand.</span> -->
+        </div>
+    </div>
     <div class="container bg-warning text-white pt-4">
         <div class="d-flex align-items-center text-success">
-            <a href="" class="text-reset text-decoration-none d-flex" data-bs-toggle="dropdown" aria-expanded="false">
+            <a href="" class="text-reset text-decoration-none d-flex" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="bi bi-person-circle fs-1 border-white text-white"></i>
                 <div class="mx-2">
                     <span class="fw-lighter small text-white">Selamat Datang,</span>
                     <p class="fw-bold text-uppercase text-white mb-0">{{ session('full_name') }}</p>
                 </div>
             </a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="/logout">Log Out</a></li>
-            </ul>
         </div>
         <!-- <div id="realtime-clock" style="font-size: 24px; font-weight: bold;"></div> -->
         <h1 id="realtime-clock" class="fw-bold mb-0" style="font-size: 70px"></h1>
