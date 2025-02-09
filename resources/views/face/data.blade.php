@@ -25,7 +25,7 @@
                     </div>
                     <div class="btn-group">
                         <a href="/face/{{ $path['id'] }}" class="btn btn-success">Edit</a>
-                        <form action="/face/{{ $path['id'] }}/" method="POST" onsubmit="return confirm('Anda yakin ingin menghapus data ini?');" style="display:inline;">
+                        <form action="{{ route('face.delete', $path['id']) }}" method="POST" onsubmit="return confirm('Anda yakin ingin menghapus data ini?');" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger rounded-start-0">
