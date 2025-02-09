@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use App\Models\Face;
+use Illuminate\Support\Facades\File;
 
 class FaceController extends Controller {
     private $userId; // Properti untuk menyimpan user_id
@@ -110,8 +111,23 @@ class FaceController extends Controller {
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Face $face)
-    {
-        //
+    public function destroy($id) {
+        // Ambil data berdasarkan id, jika tidak ditemukan akan menghasilkan 404
+        $face = Face::findOrFail($id);
+
+        // Tentukan path lengkap file gambar yang tersimpan di folder storage/app/private/face
+        // Misalnya nama file disimpan pada kolom 'image' di database
+        $filePath = storage_path('app/private/face/' . $face->face_name);
+
+        // Cek apakah file ada, lalu hapus file tersebut
+        if (File::exists($filePath)) {
+            File::delete($filePath);
+        }
+
+        // Hapus data record dari database
+        $face->delete();
+
+        // Redirect ke halaman index atau halaman lain dengan pesan sukses
+        return redirect('/face')->with('success', 'Data dan file berhasil dihapus.');
     }
 }

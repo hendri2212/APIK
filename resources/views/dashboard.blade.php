@@ -35,49 +35,49 @@
     <div class="bg-white container text-center text-success" style="height: 70vh">
         <div class="row g-2">
             <div class="col-3">
-                <a href="/history/absent" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none">
+                <a href="/history/absent" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none shadow">
                     <i class="bi bi-clock-history fs-3"></i>
                     <span class="small">History</span>
                 </a>
             </div>
             <div class="col-3">
-                <a href="/profile" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none">
+                <a href="/profile" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none shadow">
                     <i class="bi bi-person fs-3"></i>
                     <span class="small">Profile</span>
                 </a>
             </div>
             <div class="col-3">
-                <a href="/work_place" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none">
+                <a href="/workplace" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none shadow">
                     <i class="bi bi-buildings fs-3"></i>
                     <span class="small">Work Place</span>
                 </a>
             </div>
             <div class="col-3">
-                <a href="/face" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none">
+                <a href="/face" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none shadow">
                     <i class="bi bi-fingerprint fs-3"></i>
                     <span class="small">Face Image</span>
                 </a>
             </div>
             <div class="col-3">
-                <div class="bg-secondary-subtle text-muted bg-opacity-10 d-flex flex-column py-2 rounded-2">
+                <div class="bg-secondary-subtle text-muted bg-opacity-10 d-flex flex-column py-2 rounded-2 shadow">
                     <i class="bi bi-filetype-pdf fs-3"></i>
-                    <span class="small">Module</span>
+                    <span class="small">Face Check</span>
                 </div>
             </div>
             <div class="col-3">
-                <div class="bg-secondary-subtle text-muted bg-opacity-10 d-flex flex-column py-2 rounded-2">
+                <div class="bg-secondary-subtle text-muted bg-opacity-10 d-flex flex-column py-2 rounded-2 shadow">
                     <i class="bi bi-book fs-3"></i>
-                    <span class="small">Schedule</span>
+                    <span class="small">Performance</span>
                 </div>
             </div>
             <div class="col-3">
-                <div class="bg-secondary-subtle text-muted bg-opacity-10 d-flex flex-column py-2 rounded-2">
+                <div class="bg-secondary-subtle text-muted bg-opacity-10 d-flex flex-column py-2 rounded-2 shadow">
                     <i class="bi bi-mortarboard fs-3"></i>
                     <span class="small">Tracer</span>
                 </div>
             </div>
             <div class="col-3">
-                <RouterLink :to="{ name: 'punish' }" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none">
+                <RouterLink :to="{ name: 'punish' }" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none shadow">
                     <i class="bi bi-hammer fs-3"></i>
                     <span class="small">Punishment</span>
                 </RouterLink>

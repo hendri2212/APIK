@@ -301,4 +301,7 @@ class PresenceController extends Controller {
             ]);
         }
     }
+
+    public function destroy($id) {
+    }
 }

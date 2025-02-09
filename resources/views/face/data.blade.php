@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <div class="bg-white container">
+    <div class="bg-white container" style="min-height: calc(100vh - 51px)">
         <a href="{{ url('/face/add') }}" class="btn btn-primary mt-2">Add Image</a>
         @forelse($facePaths as $path)
             <div class="alert alert-light mb-0 mt-2">
@@ -25,9 +25,13 @@
                     </div>
                     <div class="btn-group">
                         <a href="/face/{{ $path['id'] }}" class="btn btn-success">Edit</a>
-                        <button class="btn btn-danger">
-                            <i class="bi bi-trash3"></i>
-                        </button>
+                        <form action="/face/{{ $path['id'] }}/" method="POST" onsubmit="return confirm('Anda yakin ingin menghapus data ini?');" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger rounded-start-0">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

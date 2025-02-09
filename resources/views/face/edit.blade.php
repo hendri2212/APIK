@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <div class="bg-white container" style="height: 90vh">
+    <div class="bg-white container" style="min-height: calc(100vh - 51px)">
         <form action="{{ route('face.update', $file->id) }}" method="post" class="mb-3">
             @csrf
             @method('PUT')
