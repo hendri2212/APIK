@@ -49,6 +49,7 @@ class AuthController extends Controller {
             // Simpan token dalam sesi
             Session::put([
                 'api_token' => $accessToken,
+                'refresh_token' => $response['data']['loginMobile']['refresh_token'],
                 'user_id' => $user->id,
                 'full_name' => $user->name,
                 'expired' => $user->expired,
