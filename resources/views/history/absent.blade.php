@@ -68,8 +68,8 @@
                                 </div>
                             @endif
                             <div class="mx-1">
-                                <span class="text-success fw-bold">{{ $item['jam_masuk_status'] }}</span>
-                                <h5 class="text-warning mb-0 fw-bold">{{ isset($item['jam_masuk']) ? $item['jam_masuk'] : '-' }}</h5>
+                                <span class="text-success fw-bold">{{ $item['jam_keluar_status'] }}</span>
+                                <h5 class="text-warning mb-0 fw-bold">{{ isset($item['jam_keluar']) ? $item['jam_keluar'] : '-' }}</h5>
                             </div>
                         </div>
                     </div>
