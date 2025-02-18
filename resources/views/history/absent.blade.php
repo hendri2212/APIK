@@ -48,9 +48,9 @@
                                     <img src="{{ asset('icon/icon-192x192.png') }}" alt="Logo Shortcut Point" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
                                 </div>
                             @endif
-                            <div class="mx-3">
+                            <div class="mx-1">
                                 <span class="text-success fw-bold">{{ $item['jam_masuk_status'] }}</span>
-                                <h3 class="text-warning mb-0 fw-bold">{{ isset($item['jam_masuk']) ? $item['jam_masuk'] : '-' }}</h3>
+                                <h5 class="text-warning mb-0 fw-bold">{{ isset($item['jam_masuk']) ? $item['jam_masuk'] : '-' }}</h>
                             </div>
                         </div>
                     </div>
@@ -67,9 +67,9 @@
                                     <img src="{{ asset('icon/icon-192x192.png') }}" alt="Logo Shortcut Point" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
                                 </div>
                             @endif
-                            <div class="mx-3">
+                            <div class="mx-1">
                                 <span class="text-success fw-bold">{{ $item['jam_masuk_status'] }}</span>
-                                <h3 class="text-warning mb-0 fw-bold">{{ isset($item['jam_masuk']) ? $item['jam_masuk'] : '-' }}</h3>
+                                <h5 class="text-warning mb-0 fw-bold">{{ isset($item['jam_masuk']) ? $item['jam_masuk'] : '-' }}</h5>
                             </div>
                         </div>
                     </div>
