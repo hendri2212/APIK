@@ -9,16 +9,7 @@ use GuzzleHttp\Client;
 
 class CheckAuth
 {
-    public function handle(Request $request, Closure $next)
-    {
-        // if (!Session::has('api_token')) {
-        //     return redirect()->route('login')->withErrors(['authError' => 'Silakan login terlebih dahulu.']);
-        // }
-        // return $next($request);
-
-
-
-        // Ambil access token dari session
+    public function handle(Request $request, Closure $next) {
         $accessToken = Session::get('api_token');
 
         // Jika token tidak ada atau sudah expired, lakukan refresh
@@ -71,9 +62,21 @@ class CheckAuth
                 // Cek apakah response mengandung data refreshToken
                 if (isset($body['data']['refreshToken'])) {
                     $newTokens = $body['data']['refreshToken'];
+
                     // Simpan token baru ke session
                     Session::put('api_token', $newTokens['access_token']);
                     Session::put('refresh_token', $newTokens['refresh_token']);
+
+                    // Update token pada tabel users
+                    if (Session::has('user_id')) {
+                        $user = \App\Models\User::find(Session::get('user_id'));
+                        if ($user) {
+                            $user->update([
+                                'api_token'     => $newTokens['access_token'],
+                                'refresh_token' => $newTokens['refresh_token'],
+                            ]);
+                        }
+                    }
                 } else {
                     // Jika response tidak mengembalikan token baru, arahkan ke login
                     return redirect()->route('login')->withErrors(['authError' => 'Gagal memperbarui token, silakan login kembali.']);
