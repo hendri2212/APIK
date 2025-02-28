@@ -153,7 +153,7 @@ class PresenceController extends Controller {
                     'Authorization'            => 'Bearer ' . $token,
                 ])
                 ->attach(
-                    '0', file_get_contents($filePath), $fileName
+                    '0', fopen($filePath, 'r'), $fileName
                 )
                 ->post('https://gateway.apikv3.kalselprov.go.id/graphql', [
                     'operations' => $operations,
@@ -245,7 +245,7 @@ class PresenceController extends Controller {
                     'Authorization'            => 'Bearer ' . $token,
                 ])
                 ->attach(
-                    '0', file_get_contents($filePath), $fileName
+                    '0', fopen($filePath, 'r'), $fileName
                 )
                 ->post('https://gateway.apikv3.kalselprov.go.id/graphql', [
                     'operations' => $operations,
