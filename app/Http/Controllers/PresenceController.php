@@ -153,11 +153,11 @@ class PresenceController extends Controller {
                     'Authorization'            => 'Bearer ' . $token,
                 ])
                 ->attach(
-                    '0', fopen($filePath, 'r'), $fileName
+                    'file', fopen($filePath, 'r'), $fileName
                 )
                 ->post('https://gateway.apikv3.kalselprov.go.id/graphql', [
                     'operations' => $operations,
-                    'map'        => '{ "0" : ["variables.createPresensiInput.foto"] }',
+                    'map'        => '{ "file" : ["variables.createPresensiInput.foto"] }',
                 ]);
 
             if ($response->failed()) {
@@ -245,11 +245,11 @@ class PresenceController extends Controller {
                     'Authorization'            => 'Bearer ' . $token,
                 ])
                 ->attach(
-                    '0', fopen($filePath, 'r'), $fileName
+                    'file', fopen($filePath, 'r'), $fileName
                 )
                 ->post('https://gateway.apikv3.kalselprov.go.id/graphql', [
                     'operations' => $operations,
-                    'map'        => '{ "0" : ["variables.createPresensiInput.foto"] }',
+                    'map'        => '{ "file" : ["variables.createPresensiInput.foto"] }',
                 ]);
 
             if ($response->failed()) {
