@@ -69,32 +69,19 @@ class PresenceController extends Controller {
     }
     
     public function generateRandomCoordinates($latitude, $longitude, $radiusInMeters) {
-        $radiusInDegrees = $radiusInMeters / 111320; // Konversi meter ke derajat
-        $u = rand() / getrandmax();
-        $v = rand() / getrandmax();
+        $radiusInDegrees = $radiusInMeters / 111320;
 
+        $u = mt_rand() / mt_getrandmax();
+        $v = mt_rand() / mt_getrandmax();
         $w = $radiusInDegrees * sqrt($u);
         $t = 2 * pi() * $v;
+        $newLat = $latitude + $w * cos($t);
+        $newLong = $longitude + $w * sin($t) / cos(deg2rad($latitude));
 
-        $deltaLat = $w * cos($t);
-        $deltaLong = $w * sin($t) / cos(deg2rad($latitude));
-
-        $newLat = $latitude + $deltaLat;
-        $newLong = $longitude + $deltaLong;
-
-        // Membatasi presisi desimal menjadi 7 angka setelah koma
-        $newLat = round($newLat, 7);
-        $newLong = round($newLong, 7);
-
-        return [$newLat, $newLong];
+        return [round($newLat, 7), round($newLong, 7)];
     }
 
     public function CheckIn(Request $request) {
-        $token = Session::get('api_token');
-        if (!$token) {
-            return redirect()->route('login')->withErrors(['authError' => 'Anda harus login terlebih dahulu.']);
-        }
-
         $userId = Session::get('user_id');
         $user = User::find($userId);
         if (!$user) {
@@ -106,7 +93,9 @@ class PresenceController extends Controller {
         $radiusInMeters = $user->radius;
 
         $currentDay = (string) Carbon::now()->dayOfWeek;
-        $faceImages = Face::where('user_id', $userId)->where('day', $currentDay)->get();
+        $faceImages = Face::where('user_id', $userId)
+            ->where('day', $currentDay)
+            ->get();
         if ($faceImages->isEmpty()) {
             return response()->json(['error' => 'No images available.'], 404);
         }
@@ -114,78 +103,62 @@ class PresenceController extends Controller {
         $randomFaceImage = Arr::random($faceImages->toArray());
         $fileName = $randomFaceImage['face_name'];
 
-        $filePath = storage_path("app/private/face/{$fileName}");
-
-        if (!file_exists($filePath)) {
-            return response()->json(['error' => "File tidak ditemukan: $filePath"], 404);
+        if (!Storage::disk('private')->exists("face/{$fileName}")) {
+            return response()->json(['error' => "File tidak ditemukan: face/{$fileName}"], 404);
         }
+        $filePath = Storage::disk('private')->path("face/{$fileName}");
 
         [$randomLat, $randomLong] = $this->generateRandomCoordinates($centerLatitude, $centerLongitude, $radiusInMeters);
 
-        try {
-            $curl = curl_init();
-
-            $operations = json_encode([
-                "operationName" => "CreatePresence",
-                "variables" => [
-                    "createPresensiInput" => [
-                        "lat" => $randomLat,
-                        "long" => $randomLong,
-                        "tipe" => "in",
-                        "status" => "dalam",
-                        "foto" => null,
-                    ]
-                ],
-                "query" => "mutation CreatePresence(\$createPresensiInput: CreatePresensiInput!) {
-                    createPresensi(createPresensiInput: \$createPresensiInput) {
-                        presensi_id
-                        employee_nip
-                        presensi_tipe
-                        presensi_date
-                        presensi_time
-                        presensi_lat
-                        presensi_long
-                        presensi_status
-                        presensi_foto_url
-                        presensi_foto_file_name
-                        presensi_sync_eabsen
-                        presensi_sync_eabsen_id
-                        __typename
-                    }
+        $operations = json_encode([
+            "operationName" => "CreatePresence",
+            "variables" => [
+                "createPresensiInput" => [
+                    "lat" => $randomLat,
+                    "long" => $randomLong,
+                    "tipe" => "in",
+                    "status" => "dalam",
+                    "foto" => null,
+                ]
+            ],
+            "query" => "mutation CreatePresence(\$createPresensiInput: CreatePresensiInput!) {
+                createPresensi(createPresensiInput: \$createPresensiInput) {
+                    presensi_id
+                    employee_nip
+                    presensi_tipe
+                    presensi_date
+                    presensi_time
+                    presensi_lat
+                    presensi_long
+                    presensi_status
+                    presensi_foto_url
+                    presensi_foto_file_name
+                    presensi_sync_eabsen
+                    presensi_sync_eabsen_id
                     __typename
-                }"
-            ]);
+                }
+                __typename
+            }"
+        ]);
 
-            curl_setopt_array($curl, [
-                CURLOPT_URL => 'https://gateway.apikv3.kalselprov.go.id/graphql',
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-                CURLOPT_POSTFIELDS => [
+        try {
+            $response = Http::asMultipart()
+                ->withHeaders([
+                    'apollo-require-preflight' => 'true',
+                    'Authorization'            => 'Bearer ' . $token,
+                ])
+                ->attach(
+                    '0', file_get_contents($filePath), $fileName
+                )
+                ->post('https://gateway.apikv3.kalselprov.go.id/graphql', [
                     'operations' => $operations,
-                    'map' => '{ "0" : ["variables.createPresensiInput.foto"] }',
-                    '0' => new \CURLFile($filePath)
-                ],
-                CURLOPT_HTTPHEADER => [
-                    'apollo-require-preflight: true',
-                    'Authorization: Bearer ' . $token
-                ],
-            ]);
+                    'map'        => '{ "0" : ["variables.createPresensiInput.foto"] }',
+                ]);
 
-            $response = curl_exec($curl);
-
-            if (curl_errno($curl)) {
-                $errorMessage = curl_error($curl);
-                curl_close($curl);
-                return response()->json(['error' => "cURL Error: $errorMessage"], 500);
+            if ($response->failed()) {
+                return response()->json(['error' => 'Error saat mengirim data ke server: ' . $response->body()], 500);
             }
 
-            curl_close($curl);
-            // return response()->json(json_decode($response, true));
             return redirect()->route('presence');
         } catch (\Exception $e) {
             return redirect()->route('presence', [
@@ -196,11 +169,6 @@ class PresenceController extends Controller {
     }
 
     public function CheckOut(Request $request) {
-        $token = Session::get('api_token');
-        if (!$token) {
-            return redirect()->route('login')->withErrors(['authError' => 'Anda harus login terlebih dahulu.']);
-        }
-
         $userId = Session::get('user_id');
         $user = User::find($userId);
         if (!$user) {
@@ -212,8 +180,9 @@ class PresenceController extends Controller {
         $radiusInMeters = $user->radius;
 
         $currentDay = (string) Carbon::now()->dayOfWeek;
-        $faceImages = Face::where('user_id', $userId)->where('day', $currentDay)->get();
-
+        $faceImages = Face::where('user_id', $userId)
+            ->where('day', $currentDay)
+            ->get();
         if ($faceImages->isEmpty()) {
             return response()->json(['error' => 'No images available.'], 404);
         }
@@ -221,78 +190,62 @@ class PresenceController extends Controller {
         $randomFaceImage = Arr::random($faceImages->toArray());
         $fileName = $randomFaceImage['face_name'];
 
-        $filePath = storage_path("app/private/face/{$fileName}");
-
-        if (!file_exists($filePath)) {
-            return response()->json(['error' => "File tidak ditemukan: $filePath"], 404);
+        if (!Storage::disk('private')->exists("face/{$fileName}")) {
+            return response()->json(['error' => "File tidak ditemukan: face/{$fileName}"], 404);
         }
+        $filePath = Storage::disk('private')->path("face/{$fileName}");
 
         [$randomLat, $randomLong] = $this->generateRandomCoordinates($centerLatitude, $centerLongitude, $radiusInMeters);
 
-        try {
-            $curl = curl_init();
-
-            $operations = json_encode([
-                "operationName" => "CreatePresence",
-                "variables" => [
-                    "createPresensiInput" => [
-                        "lat" => $randomLat,
-                        "long" => $randomLong,
-                        "tipe" => "out",
-                        "status" => "dalam",
-                        "foto" => null,
-                    ]
-                ],
-                "query" => "mutation CreatePresence(\$createPresensiInput: CreatePresensiInput!) {
-                    createPresensi(createPresensiInput: \$createPresensiInput) {
-                        presensi_id
-                        employee_nip
-                        presensi_tipe
-                        presensi_date
-                        presensi_time
-                        presensi_lat
-                        presensi_long
-                        presensi_status
-                        presensi_foto_url
-                        presensi_foto_file_name
-                        presensi_sync_eabsen
-                        presensi_sync_eabsen_id
-                        __typename
-                    }
+        $operations = json_encode([
+            "operationName" => "CreatePresence",
+            "variables" => [
+                "createPresensiInput" => [
+                    "lat" => $randomLat,
+                    "long" => $randomLong,
+                    "tipe" => "out",
+                    "status" => "dalam",
+                    "foto" => null,
+                ]
+            ],
+            "query" => "mutation CreatePresence(\$createPresensiInput: CreatePresensiInput!) {
+                createPresensi(createPresensiInput: \$createPresensiInput) {
+                    presensi_id
+                    employee_nip
+                    presensi_tipe
+                    presensi_date
+                    presensi_time
+                    presensi_lat
+                    presensi_long
+                    presensi_status
+                    presensi_foto_url
+                    presensi_foto_file_name
+                    presensi_sync_eabsen
+                    presensi_sync_eabsen_id
                     __typename
-                }"
-            ]);
+                }
+                __typename
+            }"
+        ]);
 
-            curl_setopt_array($curl, [
-                CURLOPT_URL => 'https://gateway.apikv3.kalselprov.go.id/graphql',
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-                CURLOPT_POSTFIELDS => [
+        try {
+            $response = Http::asMultipart()
+                ->withHeaders([
+                    'apollo-require-preflight' => 'true',
+                    'Authorization'            => 'Bearer ' . $token,
+                ])
+                ->attach(
+                    '0', file_get_contents($filePath), $fileName
+                )
+                ->post('https://gateway.apikv3.kalselprov.go.id/graphql', [
                     'operations' => $operations,
-                    'map' => '{ "0" : ["variables.createPresensiInput.foto"] }',
-                    '0' => new \CURLFile($filePath)
-                ],
-                CURLOPT_HTTPHEADER => [
-                    'apollo-require-preflight: true',
-                    'Authorization: Bearer ' . $token
-                ],
-            ]);
+                    'map'        => '{ "0" : ["variables.createPresensiInput.foto"] }',
+                ]);
 
-            $response = curl_exec($curl);
-
-            if (curl_errno($curl)) {
-                $errorMessage = curl_error($curl);
-                curl_close($curl);
-                return response()->json(['error' => "cURL Error: $errorMessage"], 500);
+            if ($response->failed()) {
+                return response()->json(['error' => 'Error saat mengirim data ke server: ' . $response->body()], 500);
             }
 
-            curl_close($curl);
-            // return response()->json(json_decode($response, true));
             return redirect()->route('presence');
         } catch (\Exception $e) {
             return redirect()->route('presence', [
