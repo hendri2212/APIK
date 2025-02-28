@@ -20,7 +20,9 @@
         <script>
             function updateClock() {
                 const clockElement = document.getElementById('realtime-clock');
+                if (!clockElement) return;
                 const dateElement = document.getElementById('realtime-date');
+                if (!dateElement) return;
                 const now = new Date();
 
                 // Format jam

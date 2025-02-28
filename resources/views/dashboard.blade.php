@@ -22,7 +22,6 @@
                 </div>
             </a>
         </div>
-        <!-- <div id="realtime-clock" style="font-size: 24px; font-weight: bold;"></div> -->
         <h1 id="realtime-clock" class="fw-bold mb-0" style="font-size: 70px"></h1>
         <p id="realtime-date" class="mb-0 px-2"></p>
         <div class="d-grid py-4">
