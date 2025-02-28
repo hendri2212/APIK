@@ -88,6 +88,11 @@ class PresenceController extends Controller {
             return response()->json(['error' => 'User not found.'], 404);
         }
 
+        $token = $user->api_token;
+        if (!$token) {
+            return response()->json(['error' => 'Token tidak tersedia.'], 403);
+        }
+
         $centerLatitude = $user->latitude;
         $centerLongitude = $user->longitude;
         $radiusInMeters = $user->radius;
@@ -173,6 +178,11 @@ class PresenceController extends Controller {
         $user = User::find($userId);
         if (!$user) {
             return response()->json(['error' => 'User not found.'], 404);
+        }
+
+        $token = $user->api_token;
+        if (!$token) {
+            return response()->json(['error' => 'Token tidak tersedia.'], 403);
         }
 
         $centerLatitude = $user->latitude;

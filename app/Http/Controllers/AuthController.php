@@ -45,11 +45,18 @@ class AuthController extends Controller {
         // Cek apakah respons berhasil dan terdapat token akses
         if ($response->successful() && isset($response['data']['loginMobile']['access_token'])) {
             $accessToken = $response['data']['loginMobile']['access_token'];
+            $refreshToken = $response['data']['loginMobile']['refresh_token'];
+
+            // Update token pada tabel users
+            $user->update([
+                'api_token'     => $accessToken,
+                'refresh_token' => $refreshToken,
+            ]);
 
             // Simpan token dalam sesi
             Session::put([
                 'api_token' => $accessToken,
-                'refresh_token' => $response['data']['loginMobile']['refresh_token'],
+                'refresh_token' => $refreshToken,
                 'user_id' => $user->id,
                 'full_name' => $user->name,
                 'expired' => $user->expired,
