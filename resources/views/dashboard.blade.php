@@ -5,36 +5,25 @@
 @section('content')
     <div class="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
         <div class="bg-dark p-4">
-            <a href="http://" class="btn btn-outline-warning">Profile</a>
-            <a href="http://" class="btn btn-outline-warning">Setting</a>
-            <a href="/logout" class="btn btn-outline-warning">Log Out</a>
-            <!-- <h5 class="text-body-emphasis h4">Collapsed content</h5>
-            <span class="text-body-secondary">Toggleable via the navbar brand.</span> -->
+            <a href="http://" class="btn btn-outline-danger">Profile</a>
+            <a href="http://" class="btn btn-outline-danger">Setting</a>
+            <a href="/logout" class="btn btn-outline-danger">Log Out</a>
         </div>
     </div>
-    <div class="container bg-warning text-white pt-4">
-        <div class="d-flex align-items-center text-success">
-            <a href="" class="text-reset text-decoration-none d-flex" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+    <div class="container bg-black text-white text-center pt-2">
+        <div class="rounded-circle border border-white w-100 h-auto d-flex flex-column justify-content-center align-items-center" style="aspect-ratio: 1/1;">
+            <a href="" class="text-reset text-decoration-none" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="bi bi-person-circle fs-1 border-white text-white"></i>
-                <div class="mx-2">
-                    <span class="fw-lighter small text-white">Selamat Datang,</span>
-                    <p class="fw-bold text-uppercase text-white mb-0">{{ session('full_name') }}</p>
-                </div>
+                <p class="fw-bold text-uppercase text-white mb-0">{{ session('full_name') }}</p>
             </a>
-        </div>
-        <h1 id="realtime-clock" class="fw-bold mb-0" style="font-size: 70px"></h1>
-        <p id="realtime-date" class="mb-0 px-2"></p>
-        <div class="d-grid py-4">
-            <a href="/presence" class="btn btn-lg rounded-4 btn-success border-white py-3">
-                <i class="bi bi-door-open-fill mx-2"></i>
-                Presence
-            </a>
+            <h1 id="realtime-clock" class="fw-bold mb-0" style="font-size: 70px"></h1>
+            <p id="realtime-date" class="mb-0 px-2"></p>
         </div>
     </div>
-    <div class="bg-white container text-center text-success" style="height: 70vh">
+    <div class="container bg-black text-white text-center pt-4" style="height: 70vh">
         <div class="row g-2">
             <div class="col-3">
-                <a href="/history/absent" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none shadow">
+                <a href="/history/absent" class="bg-black-subtle border border-white d-flex flex-column py-2 rounded-2 text-reset text-decoration-none">
                     <i class="bi bi-clock-history fs-3"></i>
                     <span class="small">History</span>
                 </a>
@@ -52,7 +41,7 @@
                 </a>
             </div>
             <div class="col-3">
-                <a href="/face" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none shadow">
+                <a href="/face" class="bg-black-subtle border border-white d-flex flex-column py-2 rounded-2 text-reset text-decoration-none">
                     <i class="bi bi-fingerprint fs-3"></i>
                     <span class="small">Face Image</span>
                 </a>
@@ -82,7 +71,7 @@
                 </RouterLink>
             </div>
         </div>
-        <p class="text-start mt-4 mb-2 text-black fw-bold">Learning Activities</p>
+        {{-- <p class="text-start mt-4 mb-2 fw-bold">Learning Activities</p>
         <div id="carouselExampleSlidesOnly" class="carousel slide pb-4" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -95,6 +84,13 @@
                     <img src="https://image.cnbcfm.com/api/v1/image/106918576-1627532474886-gettyimages-871203832-pi-1589476.jpeg" class="d-block w-100 rounded-4" style="height: 25vh" alt="...">
                 </div>
             </div>
+        </div> --}}
+        
+        <div class="d-grid">
+            <a href="/presence" class="btn btn-lg rounded-4 btn-success border-white py-3 fixed-bottom">
+                <i class="bi bi-door-open-fill mx-2"></i>
+                Presence
+            </a>
         </div>
     </div>
 @endsection
