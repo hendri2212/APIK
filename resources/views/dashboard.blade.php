@@ -20,7 +20,7 @@
             <p id="realtime-date" class="mb-0 px-2"></p>
         </div>
     </div>
-    <div class="container bg-black text-white text-center pt-4" style="height: 70vh">
+    <div class="container bg-black text-white text-center pt-4" style="min-height: calc(100vh - 444px)">
         <div class="row g-2">
             <div class="col-3">
                 <a href="/history/absent" class="bg-black-subtle border border-white d-flex flex-column py-2 rounded-2 text-reset text-decoration-none">
@@ -86,11 +86,9 @@
             </div>
         </div> --}}
         
-        <div class="d-grid">
-            <a href="/presence" class="btn btn-lg rounded-4 btn-success border-white py-3 fixed-bottom">
-                <i class="bi bi-door-open-fill mx-2"></i>
-                Presence
-            </a>
-        </div>
+        <a href="/presence" class="btn btn-lg btn-outline-light border-0 border-top rounded-0 border-white py-3 fixed-bottom">
+            <i class="bi bi-door-open-fill mx-2"></i>
+            Presence
+        </a>
     </div>
 @endsection
