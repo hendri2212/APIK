@@ -21,14 +21,14 @@
         </div>
     </div>
     <div class="container bg-black text-white text-center pt-4" style="min-height: calc(100vh - 444px)">
-        <div class="row g-2">
+        <div class="d-flex flex-column align-items-center justify-content-center gap-2 h-100">
             <div class="col-3">
-                <a href="/history/absent" class="bg-black-subtle border border-white d-flex flex-column py-2 rounded-2 text-reset text-decoration-none">
+                <a href="/history/absent" class="bg-black-subtle border border-white d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
                     <i class="bi bi-clock-history fs-3"></i>
                     <span class="small">History</span>
                 </a>
             </div>
-            <div class="col-3">
+            {{-- <div class="col-3">
                 <a href="/profile" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none shadow">
                     <i class="bi bi-person fs-3"></i>
                     <span class="small">Profile</span>
@@ -39,14 +39,14 @@
                     <i class="bi bi-buildings fs-3"></i>
                     <span class="small">Work Place</span>
                 </a>
-            </div>
+            </div> --}}
             <div class="col-3">
-                <a href="/face" class="bg-black-subtle border border-white d-flex flex-column py-2 rounded-2 text-reset text-decoration-none">
+                <a href="/face" class="bg-black-subtle border border-white d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
                     <i class="bi bi-fingerprint fs-3"></i>
                     <span class="small">Face Image</span>
                 </a>
             </div>
-            <div class="col-3">
+            {{-- <div class="col-3">
                 <div class="bg-secondary-subtle text-muted bg-opacity-10 d-flex flex-column py-2 rounded-2 shadow">
                     <i class="bi bi-filetype-pdf fs-3"></i>
                     <span class="small">Face Check</span>
@@ -69,7 +69,7 @@
                     <i class="bi bi-hammer fs-3"></i>
                     <span class="small">Punishment</span>
                 </RouterLink>
-            </div>
+            </div> --}}
         </div>
         {{-- <p class="text-start mt-4 mb-2 fw-bold">Learning Activities</p>
         <div id="carouselExampleSlidesOnly" class="carousel slide pb-4" data-bs-ride="carousel">
