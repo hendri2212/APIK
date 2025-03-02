@@ -86,7 +86,7 @@
             </div>
         </div> --}}
         
-        <a href="/presence" class="btn btn-lg btn-dark border-0 border-top rounded-0 border-white fixed-bottom">
+        <a href="/presence" class="btn btn-lg btn-dark rounded-0 border-white fixed-bottom">
             <i class="bi bi-door-open-fill mx-2"></i>
             Presence
         </a>
