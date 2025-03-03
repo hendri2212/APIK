@@ -13,7 +13,12 @@
     <div class="container bg-black text-white text-center pt-2">
         <div class="rounded-circle border border-white w-100 h-auto d-flex flex-column justify-content-center align-items-center" style="aspect-ratio: 1/1;">
             <a href="" class="text-reset text-decoration-none" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                <img src="https://simpeg.kalselprov.go.id/document/images/199108022024211014.png" alt="" class="w-25 h-auto border border-white rounded-circle mb-2" style="aspect-ratio: 1/1;">
+                {{-- <img src="https://simpeg.kalselprov.go.id/document/images/{{ $item['nip'] }}.png" alt="" class="w-25 h-auto border border-white rounded-circle mb-2" style="aspect-ratio: 1/1;"> --}}
+                @if ({{ session('full_name') }} == "Hendri Arifin, S.Kom")
+                    <img src="https://simpeg.kalselprov.go.id/document/images/199108022024211014.png" alt="" class="w-25 h-auto border border-white rounded-circle mb-2" style="aspect-ratio: 1/1;">
+                @else
+                    <img src="https://simpeg.kalselprov.go.id/document/images/199011042022211001.png" alt="" class="w-25 h-auto border border-white rounded-circle mb-2" style="aspect-ratio: 1/1;">
+                @endif
                 <p class="fw-bold text-uppercase text-white mb-0">{{ session('full_name') }}</p>
             </a>
             <h1 id="realtime-clock" class="fw-bold mb-0" style="font-size: 70px"></h1>
