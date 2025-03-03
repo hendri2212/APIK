@@ -42,7 +42,7 @@
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title fw-bold mb-0">Presensi Masuk</h5>
+                            <h5 class="card-title fw-bold mb-0">Check In</h5>
                             <span class="rounded-pill bg-warning text-white fw-bold p-2">{{ $item['jam_masuk_status'] }}</span>
                         </div>
                         <p class="card-text text-muted">{{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('d F Y') }}</p>
@@ -59,7 +59,7 @@
                             @endif
                             <div class="mx-3">
                                 <h1 class="display-4 text-warning mb-0 fw-bold">{{ isset($item['jam_masuk']) ? $item['jam_masuk'] : '-' }}</h1>
-                                <p class="text-muted mb-0">Masuk : 07:15:00 - 08:00:00</p>
+                                <p class="text-muted mb-0">Masuk : {{ $item['jam_mulai_absen_pagi'] }} - {{ $item['jam_mulai_kerja'] }}</p>
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title fw-bold mb-0">Presensi Pulang</h5>
+                            <h5 class="card-title fw-bold mb-0">Check Out</h5>
                             <span class="rounded-pill bg-warning text-white fw-bold p-2">{{ $item['jam_keluar_status'] }}</span>
                         </div>
                         <p class="card-text text-muted">{{ Carbon::parse($item['tanggal_keluar'])->translatedFormat('d F Y') }}</p>
@@ -84,7 +84,7 @@
                             @endif
                             <div class="mx-3">
                                 <h1 class="display-4 text-warning mb-0 fw-bold">{{ isset($item['jam_keluar']) ? $item['jam_keluar'] : '-' }}</h1>
-                                <p class="text-muted mb-0">Pulang : 16:00:00 - 23:59:00</p>
+                                <p class="text-muted mb-0">Pulang : {{ $item['jam_pulang_kerja'] }} - {{ $item['jam_mulai_absen_pulang'] }}</p>
                             </div>
                         </div>
                     </div>
