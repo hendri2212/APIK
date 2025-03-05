@@ -65,6 +65,16 @@ class FaceController extends Controller {
             $filename = time() . '_' . $file->getClientOriginalName(); // Tambahkan timestamp
             $path = $file->storeAs('private/face', $filename);
 
+            // Resize gambar dengan mempertahankan aspect ratio
+            $resizedImage = Image::make($file->getRealPath());
+            $resizedImage->resize(500, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            // Simpan gambar yang sudah diresize
+            $resizedImage->save($path.'/'.$filename);
+
             Face::create(['face_name' => $filename, 'user_id' => $this->userId]);
 
             // return back()->with('success', 'Image uploaded successfully!');
