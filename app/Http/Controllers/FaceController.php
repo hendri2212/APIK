@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use App\Models\Face;
 use Illuminate\Support\Facades\File;
+use Image;
 
 class FaceController extends Controller {
     private $userId; // Properti untuk menyimpan user_id
