@@ -55,35 +55,47 @@ class FaceController extends Controller {
     }
 
     public function store(Request $request) {
-        // Validasi file
+        // Validasi file gambar
         $request->validate([
             'face_name' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Simpan file
         if ($request->hasFile('face_name')) {
             $file = $request->file('face_name');
-            $filename = time() . '_' . $file->getClientOriginalName(); // Tambahkan timestamp
+            $filename = time() . '_' . $file->getClientOriginalName();
 
-            // Resize gambar dengan mempertahankan aspect ratio
-            $resizedImage = Image::make($file->getRealPath());
-            $resizedImage->resize(500, null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+            // Tentukan path penyimpanan secara private di storage
+            $destinationPath = storage_path('app/private/face');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
 
-            // Simpan gambar yang sudah diresize
-            // $path = $file->storeAs('private/face', $filename);
-            $resizedImage->save('private/face'.$filename);
+            try {
+                // Resize gambar dengan mempertahankan aspect ratio
+                $resizedImage = Image::make($file->getRealPath());
+                $resizedImage->resize(500, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
 
-            Face::create(['face_name' => $filename, 'user_id' => $this->userId]);
+                // Simpan gambar yang sudah diresize ke folder private
+                $resizedImage->save($destinationPath . '/' . $filename);
+            } catch (\Exception $e) {
+                return back()->with('error', 'Terjadi kesalahan saat mengupload gambar: ' . $e->getMessage());
+            }
 
-            // return back()->with('success', 'Image uploaded successfully!');
-            return redirect('/face');
+            // Simpan data ke database (pastikan user sudah login, atau gunakan cara lain untuk mendapatkan user_id)
+            Face::create([
+                'face_name' => $filename,
+                'user_id'   => Auth::id(),
+            ]);
+
+            return redirect('/face')->with('success', 'Image uploaded successfully!');
         }
 
         return back()->with('error', 'Please select a valid image.');
     }
+
 
     public function show($file_name) {
         $disk = Storage::disk('private');
