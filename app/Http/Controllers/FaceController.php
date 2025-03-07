@@ -84,6 +84,9 @@ class FaceController extends Controller {
                 // Resize gambar dengan mempertahankan aspect ratio
                 $image = Image::read($file->getRealPath());
 
+                // Perbaiki orientasi gambar jika memiliki metadata EXIF
+                $image->orientate();
+
                 // Tentukan lebar target
                 $targetWidth = 800;
                 // Hitung tinggi baru berdasarkan aspek rasio asli
