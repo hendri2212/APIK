@@ -89,8 +89,10 @@ class FaceController extends Controller {
 
                 // Perbaiki orientasi gambar jika memiliki metadata EXIF
                 if (method_exists($image, 'orientate')) {
-                    $image->orientate();
+                    // $image->orientate();
+                    dd("Tersedia");
                 } else {
+                    dd("Tidak Tersedia");
                     // Tangani orientasi secara manual jika memungkinkan
                     if (function_exists('exif_read_data')) {
                         $exif = @exif_read_data($file->getRealPath());
