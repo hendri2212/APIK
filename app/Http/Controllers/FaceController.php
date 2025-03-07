@@ -81,11 +81,34 @@ class FaceController extends Controller {
             }
 
             try {
+                // (Opsional) Atur batas memori jika diperlukan
+                // ini_set('memory_limit', '256M');
+
                 // Resize gambar dengan mempertahankan aspect ratio
                 $image = Image::read($file->getRealPath());
 
                 // Perbaiki orientasi gambar jika memiliki metadata EXIF
-                $image->orientate();
+                if (method_exists($image, 'orientate')) {
+                    $image->orientate();
+                } else {
+                    // Tangani orientasi secara manual jika memungkinkan
+                    if (function_exists('exif_read_data')) {
+                        $exif = @exif_read_data($file->getRealPath());
+                        if ($exif && isset($exif['Orientation'])) {
+                            switch ($exif['Orientation']) {
+                                case 3:
+                                    $image->rotate(180);
+                                    break;
+                                case 6:
+                                    $image->rotate(-90);
+                                    break;
+                                case 8:
+                                    $image->rotate(90);
+                                    break;
+                            }
+                        }
+                    }
+                }
 
                 // Tentukan lebar target
                 $targetWidth = 800;
