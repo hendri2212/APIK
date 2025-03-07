@@ -57,7 +57,7 @@ class FaceController extends Controller {
     public function store(Request $request) {
         // Validasi file gambar
         $request->validate([
-            'face_name' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'face_name' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
         if ($request->hasFile('face_name')) {
