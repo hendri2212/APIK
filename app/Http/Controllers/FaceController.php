@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-use App\Models\Face;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Laravel\Facades\Image;
+use App\Models\Face;
 
 class FaceController extends Controller {
     private $userId; // Properti untuk menyimpan user_id
@@ -55,11 +56,21 @@ class FaceController extends Controller {
     }
 
     public function store(Request $request) {
-        // Validasi file gambar
-        $request->validate([
+         // Validasi file gambar menggunakan Validator dengan custom message
+        $validator = Validator::make($request->all(), [
             'face_name' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
+        ], [
+            'face_name.required' => 'Gambar harus diupload.',
+            'face_name.image'    => 'File harus berupa gambar.',
+            'face_name.mimes'    => 'Format gambar harus jpeg, png, jpg, atau gif.',
+            'face_name.max'      => 'Ukuran gambar maksimal 10MB.',
         ]);
 
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        // Pastikan file ada di request
         if ($request->hasFile('face_name')) {
             $file = $request->file('face_name');
             $filename = time() . '_' . $file->getClientOriginalName();
@@ -72,14 +83,21 @@ class FaceController extends Controller {
 
             try {
                 // Resize gambar dengan mempertahankan aspect ratio
-                $resizedImage = Image::read($file->getRealPath());
-                $resizedImage->resize(800, null, function ($constraint) {
+                $image = Image::read($file->getRealPath());
+
+                // Tentukan lebar target
+                $targetWidth = 800;
+                // Hitung tinggi baru berdasarkan aspek rasio asli
+                $targetHeight = intval(($image->height() / $image->width()) * $targetWidth);
+
+                // Resize gambar secara proporsional
+                $image->resize($targetWidth, $targetHeight, function($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
 
                 // Simpan gambar yang sudah diresize ke folder private
-                $resizedImage->save($destinationPath . '/' . $filename);
+                $image->save($destinationPath . '/' . $filename);
             } catch (\Exception $e) {
                 return back()->with('error', 'Terjadi kesalahan saat mengupload gambar: ' . $e->getMessage());
             }
