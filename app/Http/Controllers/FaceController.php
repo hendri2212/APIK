@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use App\Models\Face;
 use Illuminate\Support\Facades\File;
-use Image;
+use Intervention\Image\Laravel\Facades\Image;
 
 class FaceController extends Controller {
     private $userId; // Properti untuk menyimpan user_id
@@ -72,8 +72,8 @@ class FaceController extends Controller {
 
             try {
                 // Resize gambar dengan mempertahankan aspect ratio
-                $resizedImage = Image::make($file->getRealPath());
-                $resizedImage->resize(500, null, function ($constraint) {
+                $resizedImage = Image::read($file->getRealPath());
+                $resizedImage->resize(800, null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
@@ -87,12 +87,12 @@ class FaceController extends Controller {
             // Simpan data ke database (pastikan user sudah login, atau gunakan cara lain untuk mendapatkan user_id)
             Face::create([
                 'face_name' => $filename,
-                'user_id'   => Auth::id(),
+                'user_id'   => $this->userId,
+                // 'user_id'   => Auth::id(),
             ]);
 
             return redirect('/face')->with('success', 'Image uploaded successfully!');
         }
-
         return back()->with('error', 'Please select a valid image.');
     }
 
