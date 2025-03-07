@@ -93,25 +93,21 @@ class FaceController extends Controller {
                 } else {
                     // Tangani orientasi secara manual jika memungkinkan
                     if (function_exists('exif_read_data')) {
-                        dd("Fungsi aktif");
-                    } else {
-                        dd("Fungsi tidak aktif");
+                        $exif = @exif_read_data($file->getRealPath());
+                        if ($exif && isset($exif['Orientation'])) {
+                            switch ($exif['Orientation']) {
+                                case 3:
+                                    $image->rotate(180);
+                                    break;
+                                case 6:
+                                    $image->rotate(-90);
+                                    break;
+                                case 8:
+                                    $image->rotate(90);
+                                    break;
+                            }
+                        }
                     }
-                    //     $exif = @exif_read_data($file->getRealPath());
-                    //     if ($exif && isset($exif['Orientation'])) {
-                    //         switch ($exif['Orientation']) {
-                    //             case 3:
-                    //                 $image->rotate(180);
-                    //                 break;
-                    //             case 6:
-                    //                 $image->rotate(-90);
-                    //                 break;
-                    //             case 8:
-                    //                 $image->rotate(90);
-                    //                 break;
-                    //         }
-                    //     }
-                    // }
                 }
 
                 // Tentukan lebar target
