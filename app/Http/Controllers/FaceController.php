@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Laravel\Facades\Image;
@@ -56,7 +55,7 @@ class FaceController extends Controller {
     }
 
     public function store(Request $request) {
-         // Validasi file gambar menggunakan Validator dengan custom message
+        // Validasi file gambar menggunakan Validator dengan custom message
         $validator = Validator::make($request->all(), [
             'face_name' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
         ], [
@@ -106,7 +105,6 @@ class FaceController extends Controller {
             Face::create([
                 'face_name' => $filename,
                 'user_id'   => $this->userId,
-                // 'user_id'   => Auth::id(),
             ]);
 
             return redirect('/face')->with('success', 'Image uploaded successfully!');
