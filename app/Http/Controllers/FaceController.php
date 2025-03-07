@@ -89,27 +89,29 @@ class FaceController extends Controller {
 
                 // Perbaiki orientasi gambar jika memiliki metadata EXIF
                 if (method_exists($image, 'orientate')) {
-                    // $image->orientate();
-                    dd("Tersedia");
+                    $image->orientate();
                 } else {
-                    dd("Tidak Tersedia");
                     // Tangani orientasi secara manual jika memungkinkan
                     if (function_exists('exif_read_data')) {
-                        $exif = @exif_read_data($file->getRealPath());
-                        if ($exif && isset($exif['Orientation'])) {
-                            switch ($exif['Orientation']) {
-                                case 3:
-                                    $image->rotate(180);
-                                    break;
-                                case 6:
-                                    $image->rotate(-90);
-                                    break;
-                                case 8:
-                                    $image->rotate(90);
-                                    break;
-                            }
-                        }
+                        dd("Fungsi aktif");
+                    } else {
+                        dd("Fungsi tidak aktif");
                     }
+                    //     $exif = @exif_read_data($file->getRealPath());
+                    //     if ($exif && isset($exif['Orientation'])) {
+                    //         switch ($exif['Orientation']) {
+                    //             case 3:
+                    //                 $image->rotate(180);
+                    //                 break;
+                    //             case 6:
+                    //                 $image->rotate(-90);
+                    //                 break;
+                    //             case 8:
+                    //                 $image->rotate(90);
+                    //                 break;
+                    //         }
+                    //     }
+                    // }
                 }
 
                 // Tentukan lebar target
