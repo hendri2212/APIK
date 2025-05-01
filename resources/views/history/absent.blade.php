@@ -8,9 +8,9 @@
 @section('title', 'Absent History')
 
 @section('navbar')
-    <div class="container bg-warning py-2">
+    <div class="container bg-light border-bottom py-2">
         <div class="d-flex align-items-center">
-            <i class="bi bi-arrow-left-circle fs-3" onclick="history.back()" style="cursor: pointer;"></i>
+            <i class="bi bi-arrow-left-circle fs-3" onclick="window.location='{{ route('dashboard') }}'" style="cursor: pointer;"></i>
             <p class="mb-0 mx-3 fw-bold">Presence History</p>
         </div>
     </div>
@@ -31,46 +31,44 @@
             </div>
         @endif
         @foreach($data as $item)
-        <div class="card mb-2 shadow-sm">
-            <div class="card-body p-2">
-                <div class="d-flex justify-content-between">
-                    <div class="col-6">
-                        <h5 class="card-title fw-bold mb-0">Check In</h5>
-                        <p class="card-text text-muted mb-0 border-bottom">{{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('l, d M Y') }}</p>
-                        <div class="d-flex align-items-center mt-2">
-                            @if (isset($item['presensi_apik'][0]['presensi_foto_url']))
-                                <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
-                                    <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) ? $item['presensi_apik'][0]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][0]['presensi_foto_file_name']) ? $item['presensi_apik'][0]['presensi_foto_file_name'] : '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
-                                    {{-- <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) }}" alt="Foto Absen Masuk" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;"> --}}
-                                </div>
-                            @else
-                                <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
-                                    <img src="{{ asset('icon/icon-192x192.png') }}" alt="Logo Shortcut Point" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
-                                </div>
-                            @endif
-                            <div class="mx-1">
-                                <span class="text-success fw-bold">{{ $item['jam_masuk_status'] }}</span>
-                                <h5 class="text-warning mb-0 fw-bold">{{ isset($item['jam_masuk']) ? $item['jam_masuk'] : '-' }}</h>
+        <div class="alert alert-light mb-2 shadow-sm p-2">
+            <div class="d-flex justify-content-between">
+                <div class="col-6">
+                    <h5 class="card-title fw-bold mb-0">Check In</h5>
+                    <p class="card-text text-muted mb-0 border-bottom">{{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('l, d M Y') }}</p>
+                    <div class="d-flex align-items-center mt-2">
+                        @if (isset($item['presensi_apik'][0]['presensi_foto_url']))
+                            <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
+                                <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) ? $item['presensi_apik'][0]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][0]['presensi_foto_file_name']) ? $item['presensi_apik'][0]['presensi_foto_file_name'] : '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
+                                {{-- <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) }}" alt="Foto Absen Masuk" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;"> --}}
                             </div>
+                        @else
+                            <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
+                                <img src="{{ asset('icon/icon-192x192.png') }}" alt="Logo Shortcut Point" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
+                            </div>
+                        @endif
+                        <div class="mx-1">
+                            <span class="text-success fw-bold">{{ $item['jam_masuk_status'] }}</span>
+                            <h5 class="text-warning mb-0 fw-bold">{{ isset($item['jam_masuk']) ? $item['jam_masuk'] : '-' }}</h>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <h5 class="card-title fw-bold mb-0">Check Out</h5>
-                        <p class="card-text text-muted mb-0 border-bottom">{{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('l, d M Y') }}</p>
-                        <div class="d-flex align-items-center mt-2">
-                            @if (isset($item['presensi_apik'][0]['presensi_foto_url']))
-                                <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
-                                    <img src="{{ isset($item['presensi_apik'][1]['presensi_foto_url']) ? $item['presensi_apik'][1]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][1]['presensi_foto_file_name']) ? $item['presensi_apik'][1]['presensi_foto_file_name'] : '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
-                                </div>
-                            @else
-                                <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
-                                    <img src="{{ asset('icon/icon-192x192.png') }}" alt="Logo Shortcut Point" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
-                                </div>
-                            @endif
-                            <div class="mx-1">
-                                <span class="text-success fw-bold">{{ $item['jam_keluar_status'] }}</span>
-                                <h5 class="text-warning mb-0 fw-bold">{{ isset($item['jam_keluar']) ? $item['jam_keluar'] : '-' }}</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="card-title fw-bold mb-0">Check Out</h5>
+                    <p class="card-text text-muted mb-0 border-bottom">{{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('l, d M Y') }}</p>
+                    <div class="d-flex align-items-center mt-2">
+                        @if (isset($item['presensi_apik'][0]['presensi_foto_url']))
+                            <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
+                                <img src="{{ isset($item['presensi_apik'][1]['presensi_foto_url']) ? $item['presensi_apik'][1]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][1]['presensi_foto_file_name']) ? $item['presensi_apik'][1]['presensi_foto_file_name'] : '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
                             </div>
+                        @else
+                            <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
+                                <img src="{{ asset('icon/icon-192x192.png') }}" alt="Logo Shortcut Point" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
+                            </div>
+                        @endif
+                        <div class="mx-1">
+                            <span class="text-success fw-bold">{{ $item['jam_keluar_status'] }}</span>
+                            <h5 class="text-warning mb-0 fw-bold">{{ isset($item['jam_keluar']) ? $item['jam_keluar'] : '-' }}</h5>
                         </div>
                     </div>
                 </div>

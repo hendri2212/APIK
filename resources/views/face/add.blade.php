@@ -3,9 +3,9 @@
 @section('title', 'Add Face User')
 
 @section('navbar')
-    <div class="container bg-warning py-2">
+    <div class="container bg-light border-bottom py-2">
         <div class="d-flex align-items-center">
-            <i class="bi bi-arrow-left-circle fs-3" onclick="history.back()" style="cursor: pointer;"></i>
+            <i class="bi bi-arrow-left-circle fs-3" onclick="window.location='{{ route('face.data') }}'" style="cursor: pointer;"></i>
             <p class="mb-0 mx-3 fw-bold">Add Face Image</p>
         </div>
     </div>

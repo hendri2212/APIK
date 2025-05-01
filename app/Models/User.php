@@ -19,10 +19,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
+        'username',
         'password',
         'api_token',
         'refresh_token',
+        'absent_type',
     ];
 
     /**
@@ -44,5 +45,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'absent_type' => 'integer',
     ];
 }
