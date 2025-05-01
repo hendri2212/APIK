@@ -13,9 +13,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
-        
+
         // Otomatis Checkout antara 16.00 - 23.00 (Misalnya dijalankan jam 16.30)
         $schedule->command('absen:auto-checkout')->dailyAt('16:30');
+
+        // CheckIn otomatis jam 07.20
+        $schedule->command('absen:auto-checkin')->dailyAt('07:20');
     }
 
     /**
