@@ -1,20 +1,21 @@
 {
     "name": "Shortcut Point",
     "short_name": "Shortcut Point",
-    "icons": [
-        {
-            "src": "icon/icon-144x144.png",
-            "type": "image/png",
-            "sizes": "144x144"
-          },
-        {
-            "src": "icon/icon-192x192.png",
-            "type": "image/png",
-            "sizes": "192x192"
-        }
-    ],
     "start_url": "/",
     "background_color": "#ffffff",
-    "theme_color": "#ffc107",
-    "display": "standalone"
-  }  
+    "theme_color": "#ffffff",
+    "display": "standalone",
+    "orientation": "portrait",
+    "icons": [
+      {
+          "src": "icon/icon-144x144.png",
+          "type": "image/png",
+          "sizes": "144x144"
+        },
+      {
+          "src": "icon/icon-192x192.png",
+          "type": "image/png",
+          "sizes": "192x192"
+      }
+    ]
+  }

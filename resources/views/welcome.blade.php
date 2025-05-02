@@ -7,6 +7,7 @@
         <meta name="theme-color" content="#FFFFFF">
         {{-- <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF" /> --}}
         {{-- <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" /> --}}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         
         <title>Apik - @yield('title')</title>
         <link rel="icon" href="favicon.ico" type="image/x-icon">
