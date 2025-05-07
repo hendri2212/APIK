@@ -57,7 +57,7 @@
                     <h5 class="card-title fw-bold mb-0">Check Out</h5>
                     <p class="card-text text-muted mb-0 border-bottom">{{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('l, d M Y') }}</p>
                     <div class="d-flex align-items-center mt-2">
-                        @if (isset($item['presensi_apik'][0]['presensi_foto_url']))
+                        @if (isset($item['presensi_apik'][1]['presensi_foto_url']))
                             <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
                                 <img src="{{ isset($item['presensi_apik'][1]['presensi_foto_url']) ? $item['presensi_apik'][1]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][1]['presensi_foto_file_name']) ? $item['presensi_apik'][1]['presensi_foto_file_name'] : '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
                             </div>

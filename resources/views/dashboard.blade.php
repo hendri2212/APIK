@@ -25,8 +25,9 @@
             <p id="realtime-date" class="mb-0 px-2"></p>
         </div>
     </div>
-    <div class="container bg-white text-center pt-4" style="min-height: calc(100vh - 409px)">
-        <div class="d-flex flex-column align-items-center justify-content-center gap-2 h-100">
+    <div class="container bg-white text-center pt-4" style="min-height: calc(100vh - 400px)">
+        {{-- <div class="d-flex flex-column align-items-center justify-content-center gap-2 h-100"> --}}
+        <div class="d-flex flex-wrap justify-content-center gap-3">
             <div class="col-3">
                 <a href="/history/absent" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
                     <i class="bi bi-clock-history fs-3"></i>
@@ -62,13 +63,13 @@
                     <i class="bi bi-book fs-3"></i>
                     <span class="small">Performance</span>
                 </div>
-            </div>
-            <div class="col-3">
-                <div class="bg-secondary-subtle text-muted bg-opacity-10 d-flex flex-column py-2 rounded-2 shadow">
-                    <i class="bi bi-mortarboard fs-3"></i>
-                    <span class="small">Tracer</span>
-                </div>
             </div> --}}
+            <div class="col-3">
+                <div class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
+                    <i class="bi bi-calendar-heart fs-3"></i>
+                    <span class="small">Today</span>
+                </div>
+            </div>
             @if (session('user_id') == 1)
             <div class="col-3">
                 <a href="/members" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
