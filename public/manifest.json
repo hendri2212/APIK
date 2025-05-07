@@ -7,15 +7,15 @@
     "display": "standalone",
     "orientation": "portrait",
     "icons": [
-      {
-          "src": "icon/icon-144x144.png",
-          "type": "image/png",
-          "sizes": "144x144"
-        },
-      {
-          "src": "icon/icon-192x192.png",
-          "type": "image/png",
-          "sizes": "192x192"
-      }
+        {
+            "src": "icon/icon-144x144.png",
+            "type": "image/png",
+            "sizes": "144x144"
+            },
+        {
+            "src": "icon/icon-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
     ]
-  }
+}
