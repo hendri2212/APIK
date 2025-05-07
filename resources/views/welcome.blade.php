@@ -3,11 +3,12 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        {{-- <meta name="theme-color" content="#ffc107"> --}}
-        <meta name="theme-color" content="#FFFFFF">
-        {{-- <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF" /> --}}
-        {{-- <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" /> --}}
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <!-- Warna status bar dan navigation bar Android -->
+        <meta name="theme-color" content="#ffffff">
+        <meta name="apple-mobile-web-app-status-bar-style" content="white-translucent">
+        <meta name="msapplication-navbutton-color" content="#ffffff">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
         
         <title>Apik - @yield('title')</title>
         <link rel="icon" href="favicon.ico" type="image/x-icon">
