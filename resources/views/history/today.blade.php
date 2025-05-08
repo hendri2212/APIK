@@ -10,7 +10,7 @@
     <div class="container bg-light border-bottom py-2">
         <div class="d-flex align-items-center">
             <i class="bi bi-arrow-left-circle fs-3" onclick="history.back()" style="cursor: pointer;"></i>
-            <p class="mb-0 mx-3 fw-bold">Absent Page</p>
+            <p class="mb-0 mx-3 fw-bold">History Today Page</p>
         </div>
     </div>
 @endsection
@@ -44,7 +44,7 @@
                         @endif
                         <div class="mx-3">
                             <h1 class="display-4 text-warning mb-0 fw-bold">{{ isset($item['jam_masuk']) ? $item['jam_masuk'] : '-' }}</h1>
-                            <p class="text-muted mb-0">Masuk : {{ $item['jam_mulai_absen_pagi'] }} - {{ $item['jam_mulai_kerja'] }}</p>
+                            <p class="text-muted mb-0">In : {{ $item['jam_mulai_absen_pagi'] }} - {{ $item['jam_mulai_kerja'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                         @endif
                         <div class="mx-3">
                             <h1 class="display-4 text-warning mb-0 fw-bold">{{ isset($item['jam_keluar']) ? $item['jam_keluar'] : '-' }}</h1>
-                            <p class="text-muted mb-0">Pulang : {{ $item['jam_pulang_kerja'] }} - {{ $item['jam_mulai_absen_pulang'] }}</p>
+                            <p class="text-muted mb-0">Out : {{ $item['jam_pulang_kerja'] }} - {{ $item['jam_mulai_absen_pulang'] }}</p>
                         </div>
                     </div>
                 </div>
