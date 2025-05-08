@@ -7,6 +7,7 @@ use App\Http\Controllers\FaceController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\WorkLocationController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\TodayController;
 // use Closure;
 
 /*
@@ -41,6 +42,7 @@ Route::middleware(['checkAuth'])->group(function () {
         Route::delete('/{id}', [FaceController::class, 'destroy'])->name('face.delete');
     });
     Route::get('/history/absent', [App\Http\Controllers\HistoryController::class, 'index'])->name('history.index');
+    Route::get('/today', [TodayController::class, 'index'])->name('history.today');
     Route::get('/workplace', [WorkLocationController::class, 'index']);
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 

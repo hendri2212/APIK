@@ -65,10 +65,10 @@
                 </div>
             </div> --}}
             <div class="col-3">
-                <div class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
+                <a href="/today" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
                     <i class="bi bi-calendar-heart fs-3"></i>
                     <span class="small">Today</span>
-                </div>
+                </a>
             </div>
             @if (session('user_id') == 1)
             <div class="col-3">
