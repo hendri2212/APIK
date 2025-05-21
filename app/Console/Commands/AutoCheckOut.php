@@ -26,6 +26,26 @@ class AutoCheckOut extends Command
         $this->info('Proses checkout otomatis selesai.');
     }
 
+    private function sendTelegramNotification($user, $message) {
+        if (!$user->telegram_id) {
+            return;
+        }
+
+        $payload = [
+            'message' => $message,
+            'to' => [(int) $user->telegram_id]
+        ];
+
+        try {
+            $response = \Http::post('https://telebot.saijaan.com/send', $payload);
+            if (!$response->successful()) {
+                \Log::warning('Gagal mengirim notifikasi Telegram: ' . $response->body());
+            }
+        } catch (\Exception $e) {
+            \Log::error('Exception saat mengirim notifikasi Telegram: ' . $e->getMessage());
+        }
+    }
+
     private function checkoutUser($user)
     {
         $token = $user->api_token;
@@ -107,6 +127,7 @@ class AutoCheckOut extends Command
             }
 
             $this->info("Checkout otomatis berhasil untuk user ID {$user->id}");
+            $this->sendTelegramNotification($user, 'Check-out berhasil untuk ' . $user->name);
         } catch (\Exception $e) {
             $this->error("Exception untuk user ID {$user->id}: " . $e->getMessage());
         }

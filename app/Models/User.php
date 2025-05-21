@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'api_token',
         'refresh_token',
+        'telegram_id',
         'absent_type',
     ];
 

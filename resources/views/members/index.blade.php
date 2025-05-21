@@ -5,7 +5,7 @@
 @section('navbar')
     <div class="container bg-light border-bottom py-2">
         <div class="d-flex align-items-center">
-            <i class="bi bi-arrow-left-circle fs-3" onclick="history.back()" style="cursor: pointer;"></i>
+            <i class="bi bi-arrow-left-circle fs-3" onclick="window.location='{{ route('dashboard') }}'" style="cursor: pointer;"></i>
             <p class="mb-0 mx-3 fw-bold">Members Page</p>
         </div>
     </div>
@@ -21,13 +21,14 @@
                         <th>Full Name</th>
                         <th>Username</th>
                         <th>Password</th>
+                        <th>Telegram</th>
                         <th>Expired</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($members as $member)
                     <tr>
-                        <td>
+                        <td class="d-flex">
                             <form action="{{ 'members/' . $member->id }}" method="POST">
                                 @csrf
                                 @method('PUT')
@@ -44,11 +45,15 @@
                                     >
                                 </div>
                             </form>
+                            <a href="{{ route('members.edit', $member->id) }}" class="text-decoration-none ms-2">
+                                <i class="bi bi-pencil"></i>
+                            </a>
                         </td>
                         <td class="text-center">{{ $member->id }}</td>
                         <td class="text-nowrap">{{ $member->name }}</td>
                         <td>{{ $member->username }}</td>
                         <td>{{ $member->password }}</td>
+                        <td>{{ $member->telegram_id }}</td>
                         <td class="text-nowrap">{{ date('d-m-Y', strtotime($member->expired)) }}</td>
                     </tr>
                     @empty

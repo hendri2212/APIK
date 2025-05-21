@@ -15,6 +15,27 @@ class PresenceController extends Controller {
     public function index(Request $request) {
         return view('presence');
     }
+
+    private function sendTelegramNotification($user, $message) {
+        if (!$user->telegram_id) {
+            \Log::info("User {$user->id} tidak memiliki telegram_id, notifikasi tidak dikirim.");
+            return;
+        }
+
+        $payload = [
+            'message' => $message,
+            'to' => [(int) $user->telegram_id]
+        ];
+
+        try {
+            $response = \Http::post('https://telebot.saijaan.com/send', $payload);
+            if (!$response->successful()) {
+                \Log::warning('Gagal mengirim notifikasi Telegram: ' . $response->body());
+            }
+        } catch (\Exception $e) {
+            \Log::error('Exception saat mengirim notifikasi Telegram: ' . $e->getMessage());
+        }
+    }
     
     public function generateRandomCoordinates($latitude, $longitude, $radiusInMeters) {
         $radiusInDegrees = $radiusInMeters / 111320;
@@ -111,7 +132,8 @@ class PresenceController extends Controller {
             if ($response->failed()) {
                 return response()->json(['error' => 'Error saat mengirim data ke server: ' . $response->body()], 500);
             }
-
+            
+            $this->sendTelegramNotification($user, 'Check-in berhasil untuk ' . $user->name);
             return redirect()->route('history.today');
         } catch (\Exception $e) {
             return redirect()->route('history.today', [
@@ -203,7 +225,8 @@ class PresenceController extends Controller {
             if ($response->failed()) {
                 return response()->json(['error' => 'Error saat mengirim data ke server: ' . $response->body()], 500);
             }
-
+            
+            $this->sendTelegramNotification($user, 'Check-out berhasil untuk ' . $user->name);
             return redirect()->route('history.today');
         } catch (\Exception $e) {
             return redirect()->route('history.today', [

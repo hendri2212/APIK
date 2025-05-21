@@ -17,7 +17,7 @@
 
 @section('content')
     <div class="bg-white container" style="min-height: calc(100vh - 51px)">
-        <p class="text-start py-2 text-black fw-bold">Absent History</p>
+        <p class="text-start py-2 mb-0 text-black fw-bold">Absent History</p>
         @if(isset($error))
             <div class="alert alert-danger" role="alert">
                 {{ $error }}

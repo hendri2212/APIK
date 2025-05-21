@@ -15,8 +15,7 @@ class AutoCheckIn extends Command
     protected $signature = 'absen:auto-checkin';
     protected $description = 'Melakukan checkin otomatis untuk user dengan absent_type 1';
 
-    public function handle()
-    {
+    public function handle() {
         $users = User::where('absent_type', 1)->get();
 
         foreach ($users as $user) {
@@ -26,9 +25,27 @@ class AutoCheckIn extends Command
         $this->info('Proses checkin otomatis selesai.');
     }
 
-    // Paste method checkinUser() di sini (dari langkah 1 di atas)
-    private function checkinUser($user)
-    {
+    private function sendTelegramNotification($user, $message) {
+        if (!$user->telegram_id) {
+            return;
+        }
+
+        $payload = [
+            'message' => $message,
+            'to' => [(int) $user->telegram_id]
+        ];
+
+        try {
+            $response = \Http::post('https://telebot.saijaan.com/send', $payload);
+            if (!$response->successful()) {
+                \Log::warning('Gagal mengirim notifikasi Telegram: ' . $response->body());
+            }
+        } catch (\Exception $e) {
+            \Log::error('Exception saat mengirim notifikasi Telegram: ' . $e->getMessage());
+        }
+    }
+
+    private function checkinUser($user) {
         $token = $user->api_token;
         if (!$token) {
             $this->error("Token tidak tersedia untuk user ID {$user->id}");
@@ -108,6 +125,7 @@ class AutoCheckIn extends Command
             }
 
             $this->info("Checkout otomatis berhasil untuk user ID {$user->id}");
+            $this->sendTelegramNotification($user, 'Check-in berhasil untuk ' . $user->name);
         } catch (\Exception $e) {
             $this->error("Exception untuk user ID {$user->id}: " . $e->getMessage());
         }
