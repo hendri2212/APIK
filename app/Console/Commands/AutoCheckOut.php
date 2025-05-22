@@ -127,7 +127,7 @@ class AutoCheckOut extends Command
             }
 
             $this->info("Checkout otomatis berhasil untuk user ID {$user->id}");
-            $this->sendTelegramNotification($user, 'Check-out berhasil untuk ' . $user->name);
+            $this->sendTelegramNotification($user, 'Check-out otomatis berhasil untuk ' . $user->name);
         } catch (\Exception $e) {
             $this->error("Exception untuk user ID {$user->id}: " . $e->getMessage());
         }
