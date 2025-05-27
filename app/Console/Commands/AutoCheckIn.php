@@ -119,13 +119,25 @@ class AutoCheckIn extends Command
                     'map'        => '{ "file" : ["variables.createPresensiInput.foto"] }',
                 ]);
 
-            if ($response->failed()) {
-                $this->error("Error server untuk user ID {$user->id}: " . $response->body());
-                return;
-            }
+            $status = $response->status();
+            $body   = $response->body();
 
-            $this->info("Checkout otomatis berhasil untuk user ID {$user->id}");
-            $this->sendTelegramNotification($user, 'Check-in otomatis berhasil untuk ' . $user->name);
+            // if ($response->failed()) {
+            //     $this->error("Error server untuk user ID {$user->id}: " . $response->body());
+            //     return;
+            // }
+
+            // $this->info("Checkout otomatis berhasil untuk user ID {$user->id}");
+            // $this->sendTelegramNotification($user, 'Check-in otomatis berhasil untuk ' . $user->name);
+
+            if ($response->successful()) {
+                $this->info("User ID {$user->id} absen berhasil.");
+                $this->sendTelegramNotification($user, 'Check-in otomatis berhasil untuk ' . $user->name);
+            } else {
+                $this->error("User ID {$user->id} absen gagal: {$body}");
+                // Sertakan body agar Anda tahu kenapa gagal
+                $this->sendTelegramNotification($user, "Check-in otomatis gagal: {$body}");
+            }
         } catch (\Exception $e) {
             $this->error("Exception untuk user ID {$user->id}: " . $e->getMessage());
         }
