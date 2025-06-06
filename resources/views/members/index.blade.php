@@ -13,6 +13,7 @@
 
 @section('content')
     <div class="bg-white container" style="min-height: calc(100vh - 54px)">
+        <a href="{{ url('/members/create') }}" class="btn btn-primary mt-2">Add Member</a>
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -21,6 +22,7 @@
                         <th>Full Name</th>
                         <th>Username</th>
                         <th>Password</th>
+                        <th>Uuid</th>
                         <th>Telegram</th>
                         <th>Expired</th>
                     </tr>
@@ -53,6 +55,7 @@
                         <td class="text-nowrap">{{ $member->name }}</td>
                         <td>{{ $member->username }}</td>
                         <td>{{ $member->password }}</td>
+                        <td>{{ $member->uuid }}</td>
                         <td>{{ $member->telegram_id }}</td>
                         <td class="text-nowrap">{{ date('d-m-Y', strtotime($member->expired)) }}</td>
                     </tr>

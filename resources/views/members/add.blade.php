@@ -35,6 +35,12 @@
                 @enderror
             </div>
             <div class="mb-3">
+                <input type="text" name="uuid" class="form-control @error('uuid') is-invalid @enderror" placeholder="Uuid" required>
+                @error('uuid')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="mb-3">
                 <input type="text" name="telegram_id" value="{{ old('telegram_id') }}" class="form-control @error('telegram_id') is-invalid @enderror" placeholder="Telegram ID" required>
                 @error('telegram_id')
                     <div class="invalid-feedback">{{ $message }}</div>
