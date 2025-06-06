@@ -24,7 +24,7 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <input type="date" name="expired" value="{{ old('expired', $member->expired) }}" class="form-control @error('expired') is-invalid @enderror" required>
+                <input type="date" name="expired" value="{{ old('expired', $member->expired->format('Y-m-d')) }}" class="form-control @error('expired') is-invalid @enderror" required>
                 @error('expired')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
