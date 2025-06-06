@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'username',
         'password',
+        'uuid',
         'api_token',
         'refresh_token',
         'telegram_id',
@@ -46,7 +47,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        // 'password' => 'hashed',
         'absent_type' => 'integer',
         'expired' => 'date',
     ];
