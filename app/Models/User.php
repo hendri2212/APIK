@@ -25,6 +25,7 @@ class User extends Authenticatable
         'refresh_token',
         'telegram_id',
         'absent_type',
+        'expired',
     ];
 
     /**
@@ -47,5 +48,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'absent_type' => 'integer',
+        'expired' => 'date',
     ];
 }
