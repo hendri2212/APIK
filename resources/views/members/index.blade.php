@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <div class="bg-white container" style="min-height: calc(100vh - 51px)">
+    <div class="bg-white container" style="min-height: calc(100vh - 54px)">
         <div class="table-responsive">
             <table class="table">
                 <thead>

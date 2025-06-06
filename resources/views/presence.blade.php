@@ -16,7 +16,7 @@
 @endsection
 
 @section('content')
-    <div class="bg-white container" style="min-height: calc(100vh - 51px)">
+    <div class="bg-white container" style="min-height: calc(100vh - 54px)">
         <p class="text-start mb-0 py-2 text-black fw-bold">Choose your action</p>
         <div class="row">
             <div class="col">

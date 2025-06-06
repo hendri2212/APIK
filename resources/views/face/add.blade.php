@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <div class="bg-white container" style="min-height: calc(100vh - 51px)">
+    <div class="bg-white container" style="min-height: calc(100vh - 54px)">
         <form action="{{ route('face.store') }}" method="post" enctype="multipart/form-data" class="mb-3">
             @csrf
             <div class="mb-3">

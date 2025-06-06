@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <div class="bg-white container" style="min-height: calc(100vh - 51px)">
+    <div class="bg-white container" style="min-height: calc(100vh - 54px)">
         <p class="text-start py-2 mb-0 text-black fw-bold">Edit Data Member</p>
         <form action="/members/{{ $member->id }}" method="post">
             @csrf

@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <div class="bg-white container" style="min-height: calc(100vh - 51px)">
+    <div class="bg-white container" style="min-height: calc(100vh - 54px)">
         <a href="{{ url('/face/add') }}" class="btn btn-primary mt-2">Add Image</a>
         @forelse($facePaths as $path)
             <div class="alert alert-light shadow-sm mb-0 mt-2">
