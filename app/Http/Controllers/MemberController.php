@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Models\User;
 
 class MemberController extends Controller {
@@ -20,7 +21,27 @@ class MemberController extends Controller {
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'        => 'required|string|max:255',
+            'username'    => 'required|string|max:255|unique:users,username',
+            'password'    => 'required|string',
+            'telegram_id' => 'required|string|max:20',
+            'expired'     => 'required|date',
+        ]);
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->password = $request->password;
+        $user->telegram_id = $request->telegram_id;
+        $user->expired = $request->expired;
+        $user->uuid = Str::random(16);
+
+        $user->save();
+
+        return redirect()
+            ->route('members.index')
+            ->with('success', 'Member berhasil ditambahkan.');
     }
 
     /**
