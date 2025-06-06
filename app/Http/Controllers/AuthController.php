@@ -28,9 +28,8 @@ class AuthController extends Controller {
             return back()->withErrors(['loginError' => 'Akun expired.']);
         }
 
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ])->post('https://gateway.apikv3.kalselprov.go.id/graphql', [
+        // $response = Http::withHeaders(['Content-Type' => 'application/json',])->post('https://gateway.apikv3.kalselprov.go.id/graphql', [
+        $response = Http::timeout(30)->post('https://gateway.apikv3.kalselprov.go.id/graphql', [
             "operationName" => null,
             "variables" => [
                 "loginMobileAuthInput" => [
@@ -62,6 +61,13 @@ class AuthController extends Controller {
                 'expired' => $user->expired,
             ]);
             return redirect()->route('dashboard');
+        }
+
+        // Handle specific API errors
+        $responseData = $response->json();
+        if (isset($responseData['errors'])) {
+            $errorMessage = $responseData['errors'][0]['message'] ?? 'Login gagal';
+            return back()->withErrors(['loginError' => $errorMessage]);
         }
 
         return back()->withErrors(['loginError' => 'Login gagal, periksa kembali kredensial Anda.']);

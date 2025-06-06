@@ -10,6 +10,7 @@ use App\Models\Face;
 use Illuminate\Support\Arr;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use App\Services\TokenRefreshService;
 
 class AutoCheckOut extends Command
 {
@@ -27,6 +28,14 @@ class AutoCheckOut extends Command
         foreach ($users as $user) {
             try {
                 $this->info("Memproses user ID: {$user->id} - {$user->name}");
+
+                // Cek apakah akun sudah expired
+                if ($user->expired && $user->expired < now()->format('Y-m-d')) {
+                    $this->error("User ID {$user->id} akun sudah expired pada {$user->expired}");
+                    $this->sendTelegramNotification($user, 'Check-out gagal: Akun sudah expired, hubungi admin');
+                    $failedCount++;
+                    continue;
+                }
                 
                 if ($this->checkoutUser($user)) {
                     $successCount++;
@@ -81,21 +90,30 @@ class AutoCheckOut extends Command
     }
 
     private function checkoutUser($user) {
-        // Validasi token
-        $token = $user->api_token;
-        if (!$token) {
+        // 1. PASTIKAN TOKEN VALID (refresh jika perlu)
+        if (!TokenRefreshService::ensureValidToken($user)) {
+            $this->error("Gagal memastikan token valid untuk user ID {$user->id}");
+            $this->sendTelegramNotification($user, 'Check-out gagal: Token tidak dapat di-refresh, mungkin refresh token sudah expired');
+            return false;
+        }
+
+        // Reload user untuk mendapat token terbaru
+        $user->refresh();
+
+        // 2. Validasi data user
+        if (!$user->api_token) {
             $this->error("Token tidak tersedia untuk user ID {$user->id}");
             $this->sendTelegramNotification($user, 'Check-out gagal: Token tidak tersedia');
             return false;
         }
 
-        // Validasi koordinat
         if (!$user->latitude || !$user->longitude) {
             $this->error("Koordinat tidak tersedia untuk user ID {$user->id}");
             $this->sendTelegramNotification($user, 'Check-out gagal: Koordinat tidak tersedia');
             return false;
         }
 
+        // 3. Validasi gambar wajah
         $currentDay = (string) Carbon::now()->dayOfWeek;
         $faceImages = Face::where('user_id', $user->id)
             ->where('day', $currentDay)
@@ -125,10 +143,132 @@ class AutoCheckOut extends Command
             return false;
         }
 
+        // 4. Generate koordinat random
         [$randomLat, $randomLong] = $this->generateRandomCoordinates(
             $user->latitude, $user->longitude, $user->radius ?? 100
         );
 
+        // 5. Prepare GraphQL mutation
+        $operations = json_encode([
+            "operationName" => "CreatePresence",
+            "variables" => [
+                "createPresensiInput" => [
+                    "lat"    => $randomLat,
+                    "long"   => $randomLong,
+                    "tipe"   => "out",
+                    "status" => "dalam",
+                    "foto"   => null,
+                ]
+            ],
+            "query" => "mutation CreatePresence(\$createPresensiInput: CreatePresensiInput!) {
+                createPresensi(createPresensiInput: \$createPresensiInput) {
+                    presensi_id
+                    employee_nip
+                    presensi_tipe
+                    presensi_date
+                    presensi_time
+                    presensi_lat
+                    presensi_long
+                    presensi_status
+                    presensi_foto_url
+                    presensi_foto_file_name
+                    presensi_sync_eabsen
+                    presensi_sync_eabsen_id
+                    __typename
+                }
+                __typename
+            }"
+        ]);
+
+        // 6. Send API request
+        try {
+            $fileHandle = fopen($filePath, 'r');
+            if (!$fileHandle) {
+                throw new \Exception("Tidak dapat membuka file: {$filePath}");
+            }
+
+            $response = Http::timeout(30)
+                ->retry(3, 1000)
+                ->asMultipart()
+                ->withHeaders([
+                    'apollo-require-preflight' => 'true',
+                    'Authorization'            => 'Bearer ' . $token,
+                    'User-Agent'              => 'Laravel-AutoCheckOut/1.0',
+                ])
+                ->attach('file', $fileHandle, $fileName)
+                ->post('https://gateway.apikv3.kalselprov.go.id/graphql', [
+                    'operations' => $operations,
+                    'map'        => '{ "file" : ["variables.createPresensiInput.foto"] }',
+                ]);
+
+            if (is_resource($fileHandle)) {
+                fclose($fileHandle);
+            }
+
+            $status = $response->status();
+            $body = $response->body();
+
+            // Log response untuk debugging
+            Log::info("CheckOut API Response", [
+                'user_id' => $user->id,
+                'status' => $status,
+                'body' => substr($body, 0, 500) // Limit log size
+            ]);
+
+            if ($response->successful()) {
+                $responseData = $response->json();
+                
+                // Periksa apakah response mengandung error GraphQL
+                if (isset($responseData['errors']) && !empty($responseData['errors'])) {
+                    $errorMessage = $responseData['errors'][0]['message'] ?? 'GraphQL Error';
+                    
+                    // Jika error karena token, coba refresh sekali lagi
+                    if (str_contains(strtolower($errorMessage), 'unauthorized') || 
+                        str_contains(strtolower($errorMessage), 'token')) {
+                        
+                        $this->info("Token error detected, trying to refresh token for user {$user->id}");
+                        
+                        if (TokenRefreshService::refreshUserToken($user)) {
+                            $user->refresh();
+                            $this->info("Token refreshed, retrying check-out for user {$user->id}");
+                            // Recursive call dengan token baru (maksimal 1 kali retry)
+                            return $this->checkoutUserWithFreshToken($user, $filePath, $fileName, $randomLat, $randomLong);
+                        }
+                    }
+                    
+                    $this->error("User ID {$user->id} GraphQL Error: {$errorMessage}");
+                    $this->sendTelegramNotification($user, "Check-out gagal: {$errorMessage}");
+                    return false;
+                }
+
+                $this->info("User ID {$user->id} check-out berhasil.");
+                $this->sendTelegramNotification($user, 'Check-out otomatis berhasil untuk ' . $user->name);
+                return true;
+            } else {
+                $this->error("User ID {$user->id} check-out gagal. Status: {$status}, Body: {$body}");
+                $this->sendTelegramNotification($user, "Check-out otomatis gagal: HTTP {$status}");
+                return false;
+            }
+
+        } catch (\Exception $e) {
+            $this->error("Exception untuk user ID {$user->id}: " . $e->getMessage());
+            $this->sendTelegramNotification($user, "Check-out gagal: " . $e->getMessage());
+            
+            Log::error("CheckOut Exception", [
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+                'file' => $fileName,
+                'coordinates' => [$randomLat, $randomLong]
+            ]);
+            
+            return false;
+        }
+    }
+
+    /**
+     * Retry check-out dengan token yang sudah di-refresh (maksimal 1 kali)
+     */
+    private function checkoutUserWithFreshToken($user, $filePath, $fileName, $randomLat, $randomLong) {
         $operations = json_encode([
             "operationName" => "CreatePresence",
             "variables" => [
@@ -161,19 +301,17 @@ class AutoCheckOut extends Command
         ]);
 
         try {
-            // Buat file handle baru setiap kali
             $fileHandle = fopen($filePath, 'r');
             if (!$fileHandle) {
                 throw new \Exception("Tidak dapat membuka file: {$filePath}");
             }
 
             $response = Http::timeout(30)
-                ->retry(3, 1000) // Retry 3 kali dengan delay 1 detik
                 ->asMultipart()
                 ->withHeaders([
                     'apollo-require-preflight' => 'true',
-                    'Authorization'            => 'Bearer ' . $token,
-                    'User-Agent'              => 'Laravel-AutoCheckOut/1.0',
+                    'Authorization'            => 'Bearer ' . $user->api_token,
+                    'User-Agent'              => 'Laravel-AutoCheckOut-Retry/1.0',
                 ])
                 ->attach('file', $fileHandle, $fileName)
                 ->post('https://gateway.apikv3.kalselprov.go.id/graphql', [
@@ -181,52 +319,30 @@ class AutoCheckOut extends Command
                     'map'        => '{ "file" : ["variables.createPresensiInput.foto"] }',
                 ]);
 
-            // Tutup file handle
             if (is_resource($fileHandle)) {
                 fclose($fileHandle);
             }
 
-            $status = $response->status();
-            $body = $response->body();
-
-            // Log response untuk debugging
-            Log::info("CheckOut API Response", [
-                'user_id' => $user->id,
-                'status' => $status,
-                'body' => $body
-            ]);
-
             if ($response->successful()) {
                 $responseData = $response->json();
                 
-                // Periksa apakah response mengandung error GraphQL
                 if (isset($responseData['errors']) && !empty($responseData['errors'])) {
                     $errorMessage = $responseData['errors'][0]['message'] ?? 'GraphQL Error';
-                    $this->error("User ID {$user->id} GraphQL Error: {$errorMessage}");
-                    $this->sendTelegramNotification($user, "Check-out gagal: {$errorMessage}");
+                    $this->error("User ID {$user->id} retry masih error: {$errorMessage}");
+                    $this->sendTelegramNotification($user, "Check-out gagal setelah retry: {$errorMessage}");
                     return false;
                 }
 
-                $this->info("User ID {$user->id} Check-out berhasil.");
-                $this->sendTelegramNotification($user, 'Check-out otomatis berhasil untuk ' . $user->name);
+                $this->info("User ID {$user->id} check-out berhasil setelah refresh token.");
+                $this->sendTelegramNotification($user, 'Check-out otomatis berhasil setelah refresh token untuk ' . $user->name);
                 return true;
             } else {
-                $this->error("User ID {$user->id} Check-out gagal. Status: {$status}, Body: {$body}");
-                $this->sendTelegramNotification($user, "Check-out otomatis gagal: HTTP {$status}");
+                $this->error("User ID {$user->id} retry gagal. Status: {$response->status()}");
                 return false;
             }
 
         } catch (\Exception $e) {
-            $this->error("Exception untuk user ID {$user->id}: " . $e->getMessage());
-            $this->sendTelegramNotification($user, "Check-out gagal: " . $e->getMessage());
-            
-            Log::error("CheckOut Exception", [
-                'user_id' => $user->id,
-                'error' => $e->getMessage(),
-                'file' => $fileName,
-                'coordinates' => [$randomLat, $randomLong]
-            ]);
-            
+            $this->error("Exception retry untuk user ID {$user->id}: " . $e->getMessage());
             return false;
         }
     }
