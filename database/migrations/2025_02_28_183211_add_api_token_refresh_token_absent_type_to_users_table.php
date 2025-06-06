@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->text('api_token', 80)->nullable()->after('radius');
-            $table->text('refresh_token', 255)->nullable()->after('api_token');
+            $table->string('api_token', 80)->nullable()->after('radius');
+            $table->text('refresh_token')->nullable()->after('api_token');
             $table->boolean('absent_type')->default(0)->after('refresh_token');
         });
     }
