@@ -23,6 +23,12 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+            <div class="mb-3">
+                <input type="date" name="expired" value="{{ old('expired', $member->expired) }}" class="form-control @error('expired') is-invalid @enderror" required>
+                @error('expired')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
             <input type="submit" name="submit" value="Update" class="btn btn-primary mb-2">
         </form>
     </div>

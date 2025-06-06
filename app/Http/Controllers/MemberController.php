@@ -40,18 +40,20 @@ class MemberController extends Controller {
     public function update(Request $request, string $id) {
         $user = User::findOrFail($id);
         
-        if ($request->filled('telegram_id')) {
+        if ($request->filled('telegram_id') || $request->filled('expired')) {
             $request->validate([
                 'telegram_id' => 'required|string|max:20',
+                'expired' => 'required|date',
             ]);
 
             $user->update([
                 'telegram_id' => $request->telegram_id,
+                'expired' => $request->expired,
             ]);
 
             return redirect()
                 ->route('members.index')
-                ->with('success', 'Telegram ID berhasil diperbarui.');
+                ->with('success', 'Data member berhasil diperbarui.');
         }
 
         // Penanganan default untuk switch absent_type
