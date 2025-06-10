@@ -192,7 +192,7 @@ class AutoCheckIn extends Command
                 ->asMultipart()
                 ->withHeaders([
                     'apollo-require-preflight' => 'true',
-                    'Authorization'            => 'Bearer ' . $token,
+                    'Authorization'            => 'Bearer ' . $user->api_token,
                     'User-Agent'              => 'Laravel-AutoCheckIn/1.0',
                 ])
                 ->attach('file', $fileHandle, $fileName)
