@@ -79,7 +79,7 @@
             </div>
             <div class="col-3">
                 <a href="/jam-absen" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
-                    <i class="bi bi-clock-history fs-3"></i>
+                    <i class="bi bi-alarm fs-3"></i>
                     <span class="small">Jam Absen</span>
                 </a>
             </div>
