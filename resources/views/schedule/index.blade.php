@@ -22,7 +22,7 @@
 
     <!-- <div class="card border-0 shadow-sm">
         <div class="card-body"> -->
-            <form action="{{ route('jam-absen.update') }}" method="POST" class="pt-2">
+            <form action="{{ route('schedule.update') }}" method="POST" class="pt-2">
                 @csrf
                 @method('PUT')
                 

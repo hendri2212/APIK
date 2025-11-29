@@ -12,7 +12,7 @@ class JamAbsenController extends Controller
      */
     public function index() {
         $jamAbsen = JamAbsen::first();
-        return view('jam_absen.index', compact('jamAbsen'));
+        return view('schedule.index', compact('jamAbsen'));
     }
 
     /**

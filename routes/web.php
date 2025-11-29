@@ -42,8 +42,8 @@ Route::middleware(['checkAuth'])->group(function () {
         Route::put('/{id}', [FaceController::class, 'update'])->name('face.update');
         Route::delete('/{id}', [FaceController::class, 'destroy'])->name('face.delete');
     });
-    Route::get('/jam-absen', [JamAbsenController::class, 'index'])->name('jam-absen');
-    Route::put('/jam-absen', [JamAbsenController::class, 'update'])->name('jam-absen.update');
+    Route::get('/schedule', [JamAbsenController::class, 'index'])->name('schedule');
+    Route::put('/schedule', [JamAbsenController::class, 'update'])->name('schedule.update');
     Route::get('/history/absent', [App\Http\Controllers\HistoryController::class, 'index'])->name('history.index');
     Route::get('/today', [TodayController::class, 'index'])->name('history.today');
     Route::get('/workplace', [WorkLocationController::class, 'index']);
