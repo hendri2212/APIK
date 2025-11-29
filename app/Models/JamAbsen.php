@@ -9,7 +9,7 @@ class JamAbsen extends Model
 {
     use HasFactory;
     
-    protected $table = 'jam_absen';
+    protected $table = 'jam_absens';
 
     protected $fillable = [
         'checkin_time',

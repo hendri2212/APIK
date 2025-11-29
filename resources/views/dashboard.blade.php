@@ -25,7 +25,7 @@
             <p id="realtime-date" class="mb-0 px-2"></p>
         </div>
     </div>
-    <div class="container bg-white text-center pt-4" style="min-height: calc(100vh - 480px)">
+    <div class="container bg-white text-center pt-4" style="min-height: 100vh">
         {{-- <div class="d-flex flex-column align-items-center justify-content-center gap-2 h-100"> --}}
         <div class="d-flex flex-wrap justify-content-center gap-3">
             <div class="col-3">
@@ -75,6 +75,12 @@
                 <a href="/members" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
                     <i class="bi bi-people fs-3"></i>
                     <span class="small">Member</span>
+                </a>
+            </div>
+            <div class="col-3">
+                <a href="/jam-absen" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
+                    <i class="bi bi-clock-history fs-3"></i>
+                    <span class="small">Jam Absen</span>
                 </a>
             </div>
             @endif
