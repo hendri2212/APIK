@@ -23,7 +23,9 @@ class MemberController extends Controller {
             'username'    => 'required|string|max:255|unique:users,username',
             'password'    => 'required|string',
             'uuid'        => 'required|string',
+            'uuid'        => 'required|string',
             'telegram_id' => 'required|string|max:20',
+            'no_hp'       => 'required|string|max:20',
             'expired'     => 'required|date',
         ]);
 
@@ -32,7 +34,9 @@ class MemberController extends Controller {
         $user->username     = $request->username;
         $user->password     = $request->password;
         $user->uuid         = $request->uuid;
+        $user->uuid         = $request->uuid;
         $user->telegram_id  = $request->telegram_id;
+        $user->no_hp        = $request->no_hp;
         $user->expired      = $request->expired;
 
         $user->save();
@@ -66,7 +70,9 @@ class MemberController extends Controller {
                 'name'        => 'required|string|max:255',
                 'username'    => 'required|string|max:255|unique:users,username,' . $id,
                 'uuid'        => 'required|string',
+                'uuid'        => 'required|string',
                 'telegram_id' => 'required|string|max:20',
+                'no_hp'       => 'required|string|max:20',
                 'expired'     => 'required|date',
             ];
             
@@ -82,7 +88,9 @@ class MemberController extends Controller {
                 'name'        => $request->name,
                 'username'    => $request->username,
                 'uuid'        => $request->uuid,
+                'uuid'        => $request->uuid,
                 'telegram_id' => $request->telegram_id,
+                'no_hp'       => $request->no_hp,
                 'expired'     => $request->expired,
             ];
             

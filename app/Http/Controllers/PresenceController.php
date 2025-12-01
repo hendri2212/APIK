@@ -134,12 +134,34 @@ class PresenceController extends Controller {
             }
             
             $this->sendTelegramNotification($user, 'Check-in berhasil untuk ' . $user->name);
+            $this->sendWhatsappNotification($user, 'Check-in berhasil untuk ' . $user->name);
             return redirect()->route('history.today');
         } catch (\Exception $e) {
             return redirect()->route('history.today', [
                 'data' => [],
                 'error' => 'Terjadi kesalahan saat menghubungi server: ' . $e->getMessage(),
             ]);
+        }
+    }
+
+    private function sendWhatsappNotification($user, $message) {
+        if (!$user->no_hp) {
+            \Log::info("User {$user->id} tidak memiliki no_hp, notifikasi WhatsApp tidak dikirim.");
+            return;
+        }
+
+        $payload = [
+            'to' => $user->no_hp,
+            'message' => $message
+        ];
+
+        try {
+            $response = \Http::post('https://wabot.tukarjual.com/send', $payload);
+            if (!$response->successful()) {
+                \Log::warning('Gagal mengirim notifikasi WhatsApp: ' . $response->body());
+            }
+        } catch (\Exception $e) {
+            \Log::error('Exception saat mengirim notifikasi WhatsApp: ' . $e->getMessage());
         }
     }
 
@@ -227,6 +249,7 @@ class PresenceController extends Controller {
             }
             
             $this->sendTelegramNotification($user, 'Check-out berhasil untuk ' . $user->name);
+            $this->sendWhatsappNotification($user, 'Check-out berhasil untuk ' . $user->name);
             return redirect()->route('history.today');
         } catch (\Exception $e) {
             return redirect()->route('history.today', [

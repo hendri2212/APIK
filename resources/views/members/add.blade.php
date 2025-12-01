@@ -47,6 +47,12 @@
                 @enderror
             </div>
             <div class="mb-3">
+                <input type="text" name="no_hp" value="{{ old('no_hp') }}" class="form-control @error('no_hp') is-invalid @enderror" placeholder="No HP (WhatsApp)" required>
+                @error('no_hp')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="mb-3">
                 <input type="date" name="expired" value="{{ old('expired') }}" class="form-control @error('expired') is-invalid @enderror" required>
                 @error('expired')
                     <div class="invalid-feedback">{{ $message }}</div>

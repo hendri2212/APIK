@@ -25,6 +25,7 @@ class User extends Authenticatable
         'api_token',
         'refresh_token',
         'telegram_id',
+        'no_hp',
         'absent_type',
         'expired',
     ];
