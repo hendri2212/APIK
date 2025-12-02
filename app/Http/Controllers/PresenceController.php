@@ -36,6 +36,27 @@ class PresenceController extends Controller {
             \Log::error('Exception saat mengirim notifikasi Telegram: ' . $e->getMessage());
         }
     }
+
+    private function sendWhatsappNotification($user, $message) {
+        if (!$user->no_hp) {
+            \Log::info("User {$user->id} tidak memiliki no_hp, notifikasi WhatsApp tidak dikirim.");
+            return;
+        }
+
+        $payload = [
+            'to' => $user->no_hp,
+            'message' => $message
+        ];
+
+        try {
+            $response = \Http::post('https://wabot.tukarjual.com/send', $payload);
+            if (!$response->successful()) {
+                \Log::warning('Gagal mengirim notifikasi WhatsApp: ' . $response->body());
+            }
+        } catch (\Exception $e) {
+            \Log::error('Exception saat mengirim notifikasi WhatsApp: ' . $e->getMessage());
+        }
+    }
     
     public function generateRandomCoordinates($latitude, $longitude, $radiusInMeters) {
         $radiusInDegrees = $radiusInMeters / 111320;
@@ -141,27 +162,6 @@ class PresenceController extends Controller {
                 'data' => [],
                 'error' => 'Terjadi kesalahan saat menghubungi server: ' . $e->getMessage(),
             ]);
-        }
-    }
-
-    private function sendWhatsappNotification($user, $message) {
-        if (!$user->no_hp) {
-            \Log::info("User {$user->id} tidak memiliki no_hp, notifikasi WhatsApp tidak dikirim.");
-            return;
-        }
-
-        $payload = [
-            'to' => $user->no_hp,
-            'message' => $message
-        ];
-
-        try {
-            $response = \Http::post('https://wabot.tukarjual.com/send', $payload);
-            if (!$response->successful()) {
-                \Log::warning('Gagal mengirim notifikasi WhatsApp: ' . $response->body());
-            }
-        } catch (\Exception $e) {
-            \Log::error('Exception saat mengirim notifikasi WhatsApp: ' . $e->getMessage());
         }
     }
 

@@ -25,7 +25,7 @@
             <p id="realtime-date" class="mb-0 px-2"></p>
         </div>
     </div>
-    <div class="container bg-white text-center pt-4" style="min-height: 100vh">
+    <div class="container bg-white text-center pt-4">
         {{-- <div class="d-flex flex-column align-items-center justify-content-center gap-2 h-100"> --}}
         <div class="d-flex flex-wrap justify-content-center gap-3">
             <div class="col-3">
