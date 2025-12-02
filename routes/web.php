@@ -53,3 +53,30 @@ Route::middleware(['checkAuth'])->group(function () {
         Route::resource('members', MemberController::class);
     });
 });
+
+Route::get('/test-wa', function (\Illuminate\Http\Request $request) {
+    $no_hp = $request->query('no_hp');
+    if (!$no_hp) {
+        return 'Please provide no_hp query parameter. Example: /test-wa?no_hp=08123456789';
+    }
+
+    $message = 'Test WhatsApp Notification from Debug Route';
+    $payload = [
+        'to' => $no_hp,
+        'message' => $message
+    ];
+
+    try {
+        $response = \Illuminate\Support\Facades\Http::post('https://wabot.tukarjual.com/send', $payload);
+        return [
+            'status' => $response->status(),
+            'body' => $response->body(),
+            'json' => $response->json(),
+            'successful' => $response->successful()
+        ];
+    } catch (\Exception $e) {
+        return [
+            'error' => $e->getMessage()
+        ];
+    }
+});

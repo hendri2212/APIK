@@ -38,13 +38,22 @@ class PresenceController extends Controller {
     }
 
     private function sendWhatsappNotification($user, $message) {
-        if (!$user->no_hp) {
+        $no_hp = $user->no_hp;
+        
+        if (!$no_hp) {
             \Log::info("User {$user->id} tidak memiliki no_hp, notifikasi WhatsApp tidak dikirim.");
             return;
         }
 
+        // Format phone number: 08xx -> 628xx
+        if (substr($no_hp, 0, 1) === '0') {
+            $no_hp = '62' . substr($no_hp, 1);
+        }
+
+        \Log::info("Mengirim notifikasi WhatsApp ke: {$no_hp} (Original: {$user->no_hp})");
+
         $payload = [
-            'to' => $user->no_hp,
+            'to' => $no_hp,
             'message' => $message
         ];
 
@@ -52,6 +61,8 @@ class PresenceController extends Controller {
             $response = \Http::post('https://wabot.tukarjual.com/send', $payload);
             if (!$response->successful()) {
                 \Log::warning('Gagal mengirim notifikasi WhatsApp: ' . $response->body());
+            } else {
+                \Log::info('Berhasil mengirim notifikasi WhatsApp ke: ' . $no_hp);
             }
         } catch (\Exception $e) {
             \Log::error('Exception saat mengirim notifikasi WhatsApp: ' . $e->getMessage());
