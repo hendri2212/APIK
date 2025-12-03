@@ -38,6 +38,8 @@ class PresenceController extends Controller {
     }
 
     private function sendWhatsappNotification($user, $message) {
+        \Log::info("Starting sendWhatsappNotification for User ID: {$user->id}, Name: {$user->name}");
+
         $no_hp = $user->no_hp;
         
         if (!$no_hp) {
@@ -45,12 +47,20 @@ class PresenceController extends Controller {
             return;
         }
 
-        // Format phone number: 08xx -> 628xx
-        if (substr($no_hp, 0, 1) === '0') {
+        // Sanitize: remove all non-numeric characters
+        $original_no_hp = $no_hp;
+        $no_hp = preg_replace('/[^0-9]/', '', $no_hp);
+
+        // Normalize to 62...
+        if (substr($no_hp, 0, 2) === '08') {
             $no_hp = '62' . substr($no_hp, 1);
+        } elseif (substr($no_hp, 0, 3) === '628') {
+            // Already correct
+        } elseif (substr($no_hp, 0, 1) === '8') {
+            $no_hp = '62' . $no_hp;
         }
 
-        \Log::info("Mengirim notifikasi WhatsApp ke: {$no_hp} (Original: {$user->no_hp})");
+        \Log::info("Mengirim notifikasi WhatsApp ke: {$no_hp} (Original: {$original_no_hp})");
 
         $payload = [
             'to' => $no_hp,
@@ -58,7 +68,12 @@ class PresenceController extends Controller {
         ];
 
         try {
-            $response = \Http::post('https://wabot.tukarjual.com/send', $payload);
+            // Use the facade alias consistently if possible, or fully qualified name
+            $response = Http::post('https://wabot.tukarjual.com/send', $payload);
+            
+            \Log::info("WhatsApp API Response Status: " . $response->status());
+            \Log::info("WhatsApp API Response Body: " . $response->body());
+
             if (!$response->successful()) {
                 \Log::warning('Gagal mengirim notifikasi WhatsApp: ' . $response->body());
             } else {
