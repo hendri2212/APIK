@@ -33,6 +33,7 @@ class AutoCheckIn extends Command
                 if ($user->expired && $user->expired < now()->format('Y-m-d')) {
                     $this->error("User ID {$user->id} akun sudah expired pada {$user->expired}");
                     $this->sendTelegramNotification($user, 'Check-in gagal: Akun sudah expired, hubungi admin');
+                    $this->sendWhatsappNotification($user, 'Check-in gagal: Akun sudah expired, hubungi admin');
                     $failedCount++;
                     continue;
                 }
@@ -89,11 +90,63 @@ class AutoCheckIn extends Command
         }
     }
 
+    private function sendWhatsappNotification($user, $message) {
+        // Log::info("Starting sendWhatsappNotification for User ID: {$user->id}, Name: {$user->name}");
+
+        $no_hp = $user->no_hp;
+        
+        if (!$no_hp) {
+            // Log::info("User {$user->id} tidak memiliki no_hp, notifikasi WhatsApp tidak dikirim.");
+            return;
+        }
+
+        // Sanitize: remove all non-numeric characters
+        $original_no_hp = $no_hp;
+        $no_hp = preg_replace('/[^0-9]/', '', $no_hp);
+
+        // Normalize to 62...
+        if (substr($no_hp, 0, 2) === '08') {
+            $no_hp = '62' . substr($no_hp, 1);
+        } elseif (substr($no_hp, 0, 3) === '628') {
+            // Already correct
+        } elseif (substr($no_hp, 0, 1) === '8') {
+            $no_hp = '62' . $no_hp;
+        }
+
+        // Log::info("Mengirim notifikasi WhatsApp ke: {$no_hp} (Original: {$original_no_hp})");
+
+        $payload = [
+            'to' => $no_hp,
+            'message' => $message
+        ];
+
+        try {
+            $response = Http::timeout(10)->post('https://wabot.tukarjual.com/send', $payload);
+            
+            // Log::info("WhatsApp API Response Status: " . $response->status());
+            // Log::info("WhatsApp API Response Body: " . $response->body());
+
+            if (!$response->successful()) {
+                Log::warning('Gagal mengirim notifikasi WhatsApp', [
+                    'user_id' => $user->id,
+                    'no_hp' => $no_hp,
+                    'response' => $response->body()
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Exception saat mengirim notifikasi WhatsApp', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
     private function checkinUser($user) {
         // 1. PASTIKAN TOKEN VALID (refresh jika perlu)
         if (!TokenRefreshService::ensureValidToken($user)) {
             $this->error("Gagal memastikan token valid untuk user ID {$user->id}");
             $this->sendTelegramNotification($user, 'Check-in gagal: Token tidak dapat di-refresh, mungkin refresh token sudah expired');
+            $this->sendWhatsappNotification($user, 'Check-in gagal: Token tidak dapat di-refresh, mungkin refresh token sudah expired');
             return false;
         }
 
@@ -104,12 +157,14 @@ class AutoCheckIn extends Command
         if (!$user->api_token) {
             $this->error("Token tidak tersedia untuk user ID {$user->id}");
             $this->sendTelegramNotification($user, 'Check-in gagal: Token tidak tersedia');
+            $this->sendWhatsappNotification($user, 'Check-in gagal: Token tidak tersedia');
             return false;
         }
 
         if (!$user->latitude || !$user->longitude) {
             $this->error("Koordinat tidak tersedia untuk user ID {$user->id}");
             $this->sendTelegramNotification($user, 'Check-in gagal: Koordinat tidak tersedia');
+            $this->sendWhatsappNotification($user, 'Check-in gagal: Koordinat tidak tersedia');
             return false;
         }
 
@@ -122,6 +177,7 @@ class AutoCheckIn extends Command
         if ($faceImages->isEmpty()) {
             $this->error("Tidak ada gambar wajah tersedia untuk user ID {$user->id} pada hari {$currentDay}");
             $this->sendTelegramNotification($user, 'Check-in gagal: Tidak ada gambar wajah tersedia untuk hari ini');
+            $this->sendWhatsappNotification($user, 'Check-in gagal: Tidak ada gambar wajah tersedia untuk hari ini');
             return false;
         }
 
@@ -131,6 +187,7 @@ class AutoCheckIn extends Command
         if (!Storage::disk('private')->exists("face/{$fileName}")) {
             $this->error("File tidak ditemukan: face/{$fileName} untuk user ID {$user->id}");
             $this->sendTelegramNotification($user, 'Check-in gagal: File foto tidak ditemukan');
+            $this->sendWhatsappNotification($user, 'Check-in gagal: File foto tidak ditemukan');
             return false;
         }
 
@@ -140,6 +197,7 @@ class AutoCheckIn extends Command
         if (!is_readable($filePath)) {
             $this->error("File tidak dapat dibaca: {$filePath} untuk user ID {$user->id}");
             $this->sendTelegramNotification($user, 'Check-in gagal: File foto tidak dapat dibaca');
+            $this->sendWhatsappNotification($user, 'Check-in gagal: File foto tidak dapat dibaca');
             return false;
         }
 
@@ -238,21 +296,25 @@ class AutoCheckIn extends Command
                     
                     $this->error("User ID {$user->id} GraphQL Error: {$errorMessage}");
                     $this->sendTelegramNotification($user, "Check-in gagal: {$errorMessage}");
+                    $this->sendWhatsappNotification($user, "Check-in gagal: {$errorMessage}");
                     return false;
                 }
 
                 $this->info("User ID {$user->id} check-in berhasil.");
                 $this->sendTelegramNotification($user, 'Check-in otomatis berhasil untuk ' . $user->name);
+                $this->sendWhatsappNotification($user, 'Check-in otomatis berhasil untuk ' . $user->name);
                 return true;
             } else {
                 $this->error("User ID {$user->id} check-in gagal. Status: {$status}, Body: {$body}");
                 $this->sendTelegramNotification($user, "Check-in otomatis gagal: HTTP {$status}");
+                $this->sendWhatsappNotification($user, "Check-in otomatis gagal: HTTP {$status}");
                 return false;
             }
 
         } catch (\Exception $e) {
             $this->error("Exception untuk user ID {$user->id}: " . $e->getMessage());
             $this->sendTelegramNotification($user, "Check-in gagal: " . $e->getMessage());
+            $this->sendWhatsappNotification($user, "Check-in gagal: " . $e->getMessage());
             
             Log::error("CheckIn Exception", [
                 'user_id' => $user->id,
@@ -330,11 +392,13 @@ class AutoCheckIn extends Command
                     $errorMessage = $responseData['errors'][0]['message'] ?? 'GraphQL Error';
                     $this->error("User ID {$user->id} retry masih error: {$errorMessage}");
                     $this->sendTelegramNotification($user, "Check-in gagal setelah retry: {$errorMessage}");
+                    $this->sendWhatsappNotification($user, "Check-in gagal setelah retry: {$errorMessage}");
                     return false;
                 }
 
                 $this->info("User ID {$user->id} check-in berhasil setelah refresh token.");
                 $this->sendTelegramNotification($user, 'Check-in otomatis berhasil setelah refresh token untuk ' . $user->name);
+                $this->sendWhatsappNotification($user, 'Check-in otomatis berhasil setelah refresh token untuk ' . $user->name);
                 return true;
             } else {
                 $this->error("User ID {$user->id} retry gagal. Status: {$response->status()}");
