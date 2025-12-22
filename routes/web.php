@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\FaceController;
 use App\Http\Controllers\HistoryController;
@@ -42,6 +43,7 @@ Route::middleware(['checkAuth'])->group(function () {
         Route::put('/{id}', [FaceController::class, 'update'])->name('face.update');
         Route::delete('/{id}', [FaceController::class, 'destroy'])->name('face.delete');
     });
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/schedule', [JamAbsenController::class, 'index'])->name('schedule');
     Route::put('/schedule', [JamAbsenController::class, 'update'])->name('schedule.update');
     Route::get('/history/absent', [App\Http\Controllers\HistoryController::class, 'index'])->name('history.index');

@@ -5,7 +5,7 @@
 @section('content')
     <div class="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
         <div class="bg-dark p-4">
-            <a href="http://" class="btn btn-outline-light">Profile</a>
+            <a href="/profile" class="btn btn-outline-light">Profile</a>
             <a href="http://" class="btn btn-outline-light">Setting</a>
             <a href="/logout" class="btn btn-outline-light">Log Out</a>
         </div>
@@ -39,13 +39,13 @@
                     <i class="bi bi-person fs-3"></i>
                     <span class="small">Profile</span>
                 </a>
-            </div>
+            </div> --}}
             <div class="col-3">
-                <a href="/workplace" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none shadow">
+                <a href="/workplace" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
                     <i class="bi bi-buildings fs-3"></i>
                     <span class="small">Work Place</span>
                 </a>
-            </div> --}}
+            </div>
             <div class="col-3">
                 <a href="/face" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
                     <i class="bi bi-fingerprint fs-3"></i>
