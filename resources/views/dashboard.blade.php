@@ -34,16 +34,22 @@
                     <span class="small">History</span>
                 </a>
             </div>
-            {{-- <div class="col-3">
-                <a href="/profile" class="bg-success-subtle d-flex flex-column py-2 rounded-2 text-reset text-decoration-none shadow">
-                    <i class="bi bi-person fs-3"></i>
-                    <span class="small">Profile</span>
-                </a>
-            </div> --}}
             <div class="col-3">
-                <a href="/workplace" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
-                    <i class="bi bi-buildings fs-3"></i>
-                    <span class="small">Work Place</span>
+                <a href="/today" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
+                    <i class="bi bi-calendar-heart fs-3"></i>
+                    <span class="small">Today</span>
+                </a>
+            </div>
+            <div class="col-3">
+                <a href="/holiday" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
+                    <i class="bi bi-calendar2-week fs-3"></i>
+                    <span class="small">Holiday</span>
+                </a>
+            </div>
+            <div class="col-3">
+                <a href="/schedule" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
+                    <i class="bi bi-alarm fs-3"></i>
+                    <span class="small">Schedule</span>
                 </a>
             </div>
             <div class="col-3">
@@ -52,6 +58,20 @@
                     <span class="small">Face Image</span>
                 </a>
             </div>
+            <div class="col-3">
+                <a href="/workplace" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
+                    <i class="bi bi-buildings fs-3"></i>
+                    <span class="small">Work Place</span>
+                </a>
+            </div>
+            @if (session('user_id') == 1)
+            <div class="col-3">
+                <a href="/members" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
+                    <i class="bi bi-people fs-3"></i>
+                    <span class="small">Member</span>
+                </a>
+            </div>
+            @endif
             {{-- <div class="col-3">
                 <div class="bg-secondary-subtle text-muted bg-opacity-10 d-flex flex-column py-2 rounded-2 shadow">
                     <i class="bi bi-filetype-pdf fs-3"></i>
@@ -64,26 +84,6 @@
                     <span class="small">Performance</span>
                 </div>
             </div> --}}
-            <div class="col-3">
-                <a href="/today" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
-                    <i class="bi bi-calendar-heart fs-3"></i>
-                    <span class="small">Today</span>
-                </a>
-            </div>
-            @if (session('user_id') == 1)
-            <div class="col-3">
-                <a href="/members" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
-                    <i class="bi bi-people fs-3"></i>
-                    <span class="small">Member</span>
-                </a>
-            </div>
-            <div class="col-3">
-                <a href="/schedule" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
-                    <i class="bi bi-alarm fs-3"></i>
-                    <span class="small">Schedule</span>
-                </a>
-            </div>
-            @endif
         </div>
         
         <a href="/presence" class="btn btn-lg btn-light rounded-0 border-0 border-top border border-black fixed-bottom">

@@ -11,6 +11,7 @@ use Illuminate\Support\Arr;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\Services\TokenRefreshService;
+use App\Models\Holiday;
 
 class AutoCheckOut extends Command
 {
@@ -18,6 +19,12 @@ class AutoCheckOut extends Command
     protected $description = 'Melakukan checkout otomatis untuk user dengan absent_type 1';
 
     public function handle() {
+        $today = Carbon::today()->toDateString();
+        if (Holiday::where('holiday_date', $today)->exists()) {
+            $this->info("Hari ini ($today) adalah tanggal merah, auto check-out dilewati.");
+            return Command::SUCCESS;
+        }
+
         $users = User::where('absent_type', 1)->get();
         
         $this->info("Memproses {$users->count()} users untuk check-out otomatis");

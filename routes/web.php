@@ -10,6 +10,7 @@ use App\Http\Controllers\WorkLocationController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\TodayController;
 use App\Http\Controllers\JamAbsenController;
+use App\Http\Controllers\HolidayController;
 // use Closure;
 
 /*
@@ -43,10 +44,16 @@ Route::middleware(['checkAuth'])->group(function () {
         Route::put('/{id}', [FaceController::class, 'update'])->name('face.update');
         Route::delete('/{id}', [FaceController::class, 'destroy'])->name('face.delete');
     });
+    Route::prefix('holiday')->name('holiday.')->group(function () {
+        Route::get('/', [HolidayController::class, 'index'])->name('data');
+        Route::post('/', [HolidayController::class, 'store'])->name('store');
+    });
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    Route::get('/schedule', [JamAbsenController::class, 'index'])->name('schedule');
-    Route::put('/schedule', [JamAbsenController::class, 'update'])->name('schedule.update');
-    Route::get('/history/absent', [App\Http\Controllers\HistoryController::class, 'index'])->name('history.index');
+    Route::prefix('schedule')->name('schedule.')->group(function () {
+        Route::get('/', [JamAbsenController::class, 'index'])->name('index');
+        Route::put('/', [JamAbsenController::class, 'update'])->name('update');
+    });
+    Route::get('/history/absent', [HistoryController::class, 'index'])->name('history.index');
     Route::get('/today', [TodayController::class, 'index'])->name('history.today');
     Route::get('/workplace', [WorkLocationController::class, 'index']);
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
