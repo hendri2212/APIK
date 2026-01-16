@@ -19,9 +19,6 @@
                     <p class="mb-1 small text-white-50">Your Face</p>
                     <h2 class="h5 mb-0">Face Recognition</h2>
                 </div>
-                {{-- <div class="bg-white text-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
-                    <i class="bi bi-calendar2-week fs-4"></i>
-                </div> --}}
                 <a href="{{ url('/face/add') }}" class="bg-white text-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
                     <i class="bi bi-person-bounding-box fs-4"></i>
                 </a>
