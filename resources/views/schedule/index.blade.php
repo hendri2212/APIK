@@ -39,12 +39,12 @@
                     @method('PUT')
 
                     <div class="mb-3">
-                        <label for="checkin_time" class="form-label">Jam Masuk (Check In)</label>
+                        <label for="checkin_time" class="form-label">Check In</label>
                         <input type="time" class="form-control" id="checkin_time" name="checkin_time" value="{{ $jamAbsen->checkin_time ?? '' }}" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="checkout_time" class="form-label">Jam Pulang (Check Out)</label>
+                        <label for="checkout_time" class="form-label">Check Out</label>
                         <input type="time" class="form-control" id="checkout_time" name="checkout_time" value="{{ $jamAbsen->checkout_time ?? '' }}" required>
                     </div>
 

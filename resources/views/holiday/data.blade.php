@@ -16,9 +16,9 @@
         <div class="rounded-4 p-3 mb-3 text-white" style="background: linear-gradient(135deg, #f66d6d 0%, #ef476f 100%);">
             <div class="d-flex align-items-center justify-content-between">
                 <div>
-                    <p class="mb-1 small text-white-50">Kalender</p>
-                    <h2 class="h5 mb-0">Tandai Tanggal Merah</h2>
-                    <p class="mb-0 small text-white-50">Klik tanggal untuk menambah/menghapus hari libur.</p>
+                    <p class="mb-1 small text-white-50">Calendar</p>
+                    <h2 class="h5 mb-0">Mark Public Holidays</h2>
+                    <p class="mb-0 small text-white-50">Click a date to add or remove a holiday.</p>
                 </div>
                 <div class="bg-white text-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
                     <i class="bi bi-calendar2-week fs-4"></i>
@@ -87,6 +87,9 @@
             border-color: transparent;
             box-shadow: 0 6px 16px rgba(239, 71, 111, 0.25);
         }
+        .calendar-day.today-outline {
+            box-shadow: 0 0 0 2px rgba(108, 117, 125, 0.45);
+        }
         .calendar-day .badge-dot {
             width: 8px;
             height: 8px;
@@ -102,18 +105,24 @@
             const holidayDates = new Set(@json(($holidays ?? collect())->pluck('holiday_date')));
             const csrfToken = '{{ csrf_token() }}';
 
-            const monthLabel = document.getElementById('monthLabel');
-            const calendarGrid = document.getElementById('calendarGrid');
-            const alertBox = document.getElementById('calendarAlert');
-
-            let current = new Date();
-
             const formatDate = (date) => {
                 const y = date.getFullYear();
                 const m = String(date.getMonth() + 1).padStart(2, '0');
                 const d = String(date.getDate()).padStart(2, '0');
                 return `${y}-${m}-${d}`;
             };
+
+            const todayIso = (() => {
+                const now = new Date();
+                now.setHours(0, 0, 0, 0);
+                return formatDate(now);
+            })();
+
+            const monthLabel = document.getElementById('monthLabel');
+            const calendarGrid = document.getElementById('calendarGrid');
+            const alertBox = document.getElementById('calendarAlert');
+
+            let current = new Date();
 
             const showAlert = (type, message) => {
                 alertBox.className = `alert alert-${type} mt-3`;
@@ -154,9 +163,13 @@
 
                     const isoDate = formatDate(displayDate);
                     const isHoliday = holidayDates.has(isoDate);
+                    const isToday = isoDate === todayIso;
+                    const todayClass = isToday
+                        ? (isHoliday ? 'today-outline' : 'bg-secondary-subtle border-secondary-subtle')
+                        : '';
 
                     cells += `
-                        <div class="calendar-day ${inCurrentMonth ? '' : 'outside-month'} ${isHoliday ? 'holiday' : ''}" data-date="${isoDate}">
+                        <div class="calendar-day ${inCurrentMonth ? '' : 'outside-month'} ${isHoliday ? 'holiday' : ''} ${todayClass}" data-date="${isoDate}">
                             <div class="d-flex justify-content-between align-items-start">
                                 <span class="fw-semibold">${displayDate.getDate()}</span>
                                 ${isHoliday ? '<span class="badge bg-light text-danger border border-light-subtle">Libur</span>' : ''}
