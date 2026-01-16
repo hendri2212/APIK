@@ -12,8 +12,22 @@
 @endsection
 
 @section('content')
-    <div class="bg-white container" style="min-height: calc(100vh - 54px)">
-        <a href="{{ url('/face/add') }}" class="btn btn-primary mt-2">Add Image</a>
+    <div class="container bg-white min-vh-100 py-3">
+        <div class="rounded-4 p-3 mb-3 text-white" style="background: linear-gradient(135deg, #1b214a 0%, #2c7be5 100%);">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <p class="mb-1 small text-white-50">Your Face</p>
+                    <h2 class="h5 mb-0">Face Recognition</h2>
+                </div>
+                {{-- <div class="bg-white text-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                    <i class="bi bi-calendar2-week fs-4"></i>
+                </div> --}}
+                <a href="{{ url('/face/add') }}" class="bg-white text-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                    <i class="bi bi-person-bounding-box fs-4"></i>
+                </a>
+            </div>
+        </div>
+        
         @forelse($facePaths as $path)
             <div class="alert alert-light shadow-sm mb-0 mt-2">
                 <div class="d-flex justify-content-between align-items-center">
