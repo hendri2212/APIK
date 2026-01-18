@@ -21,9 +21,11 @@
         <form method="GET" action="{{ url('/history/absent') }}" class="py-2">
             <div class="mb-3">
                 <label for="tanggal" class="form-label text-black fw-bold">Select a Month</label>
-                <input type="month" id="tanggal" name="tanggal" class="form-control" value="{{ $tanggal }}">
+                <div class="input-group">
+                    <input type="month" id="tanggal" name="tanggal" class="form-control" value="{{ $tanggal }}">
+                    <button type="submit" class="btn btn-primary">Show Data</button>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Show Data</button>
         </form>
         @if(isset($error))
             <div class="alert alert-danger" role="alert">
