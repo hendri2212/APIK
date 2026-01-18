@@ -174,7 +174,7 @@
                                 <span class="fw-semibold">${displayDate.getDate()}</span>
                                 ${isHoliday ? '<span class="badge bg-light text-danger border border-light-subtle">Libur</span>' : ''}
                             </div>
-                            <div class="small ${inCurrentMonth ? 'text-muted' : 'text-secondary'}">${isHoliday ? 'Tanggal merah' : ''}</div>
+                            <div class="small ${inCurrentMonth ? 'text-muted' : 'text-secondary'}">${isHoliday ? 'Red' : ''}</div>
                         </div>
                     `;
                 }

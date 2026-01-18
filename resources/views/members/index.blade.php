@@ -13,6 +13,18 @@
 
 @section('content')
     <div class="bg-white container" style="min-height: calc(100vh - 54px)">
+        <div class="rounded-4 p-3 mb-3 text-white" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <p class="mb-1 small text-white-50">Members</p>
+                    <h2 class="h5 mb-0">Manage Members</h2>
+                    <p class="mb-0 small text-white-50">Add or update member details below.</p>
+                </div>
+                <div class="bg-white text-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                    <i class="bi bi-people-fill fs-4"></i>
+                </div>
+            </div>
+        </div>
         <a href="{{ url('/members/create') }}" class="btn btn-primary mt-2">Add Member</a>
         <div class="table-responsive">
             <table class="table">
