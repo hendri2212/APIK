@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <div class="bg-white bg-white min-vh-100 py-3">
+    <div class="container bg-white min-vh-100 py-3">
         <div class="rounded-4 p-3 mb-3 text-white" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
             <div class="d-flex align-items-center justify-content-between">
                 <div>
