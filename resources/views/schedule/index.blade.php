@@ -13,7 +13,7 @@
 
 @section('content')
     <div class="container bg-white min-vh-100 py-3">
-        <div class="rounded-4 p-3 mb-3 text-white" style="background: linear-gradient(135deg, #1f6feb 0%, #0f5132 100%);">
+        <div class="rounded-4 p-3 mb-3 text-white" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);">
             <div class="d-flex align-items-center justify-content-between">
                 <div>
                     <p class="mb-1 small text-white-50">Schedule</p>
