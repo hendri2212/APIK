@@ -29,6 +29,12 @@
         {{-- <div class="d-flex flex-column align-items-center justify-content-center gap-2 h-100"> --}}
         <div class="d-flex flex-wrap justify-content-center gap-3">
             <div class="col-3">
+                <a href="/holiday" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
+                    <i class="bi bi-calendar2-week fs-3"></i>
+                    <span class="small">Holiday</span>
+                </a>
+            </div>
+            <div class="col-3">
                 <a href="/history/absent" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
                     <i class="bi bi-clock-history fs-3"></i>
                     <span class="small">History</span>
@@ -41,21 +47,15 @@
                 </a>
             </div>
             <div class="col-3">
-                <a href="/holiday" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
-                    <i class="bi bi-calendar2-week fs-3"></i>
-                    <span class="small">Holiday</span>
+                <a href="/face" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
+                    <i class="bi bi-fingerprint fs-3"></i>
+                    <span class="small">Face Image</span>
                 </a>
             </div>
             <div class="col-3">
                 <a href="/schedule" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
                     <i class="bi bi-alarm fs-3"></i>
                     <span class="small">Schedule</span>
-                </a>
-            </div>
-            <div class="col-3">
-                <a href="/face" class="bg-light border border-black d-flex flex-column justify-content-center align-items-center text-center rounded-circle text-reset text-decoration-none w-100 h-auto" style="aspect-ratio: 1/1;">
-                    <i class="bi bi-fingerprint fs-3"></i>
-                    <span class="small">Face Image</span>
                 </a>
             </div>
             <div class="col-3">
