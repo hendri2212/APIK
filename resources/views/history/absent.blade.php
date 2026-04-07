@@ -33,16 +33,19 @@
             </div>
         @endif
         @foreach($data as $item)
+        @php
+            $absen_masuk = collect($item['presensi_apik'] ?? [])->firstWhere('presensi_tipe', 'IN');
+            $absen_keluar = collect($item['presensi_apik'] ?? [])->firstWhere('presensi_tipe', 'OUT');
+        @endphp
         <div class="alert alert-light mb-2 shadow-sm p-2">
             <div class="d-flex justify-content-between">
                 <div class="col-6">
                     <h5 class="card-title fw-bold mb-0">Check In</h5>
                     <p class="card-text text-muted mb-0 border-bottom">{{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('l, d M Y') }}</p>
                     <div class="d-flex align-items-center mt-2">
-                        @if (isset($item['presensi_apik'][0]['presensi_foto_url']))
+                        @if (isset($absen_masuk['presensi_foto_url']))
                             <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
-                                <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) ? $item['presensi_apik'][0]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][0]['presensi_foto_file_name']) ? $item['presensi_apik'][0]['presensi_foto_file_name'] : '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
-                                {{-- <img src="{{ isset($item['presensi_apik'][0]['presensi_foto_url']) }}" alt="Foto Absen Masuk" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;"> --}}
+                                <img src="{{ $absen_masuk['presensi_foto_url'] }}" alt="{{ $absen_masuk['presensi_foto_file_name'] ?? '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
                             </div>
                         @else
                             <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
@@ -51,7 +54,7 @@
                         @endif
                         <div class="mx-1">
                             <span class="text-success fw-bold">{{ $item['jam_masuk_status'] }}</span>
-                            <h5 class="text-warning mb-0 fw-bold">{{ isset($item['jam_masuk']) ? $item['jam_masuk'] : '-' }}</h>
+                            <h5 class="text-warning mb-0 fw-bold">{{ isset($item['jam_masuk']) ? $item['jam_masuk'] : '-' }}</h5>
                         </div>
                     </div>
                 </div>
@@ -59,9 +62,9 @@
                     <h5 class="card-title fw-bold mb-0">Check Out</h5>
                     <p class="card-text text-muted mb-0 border-bottom">{{ Carbon::parse($item['tanggal_masuk'])->translatedFormat('l, d M Y') }}</p>
                     <div class="d-flex align-items-center mt-2">
-                        @if (isset($item['presensi_apik'][1]['presensi_foto_url']))
+                        @if (isset($absen_keluar['presensi_foto_url']))
                             <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
-                                <img src="{{ isset($item['presensi_apik'][1]['presensi_foto_url']) ? $item['presensi_apik'][1]['presensi_foto_url'] : '-' }}" alt="{{ isset($item['presensi_apik'][1]['presensi_foto_file_name']) ? $item['presensi_apik'][1]['presensi_foto_file_name'] : '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
+                                <img src="{{ $absen_keluar['presensi_foto_url'] }}" alt="{{ $absen_keluar['presensi_foto_file_name'] ?? '-' }}" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
                             </div>
                         @else
                             <div class="rounded-4 overflow-hidden" style="width: 100px; height: 100px;">
